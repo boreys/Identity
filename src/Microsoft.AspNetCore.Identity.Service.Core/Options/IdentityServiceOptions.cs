@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -18,11 +17,11 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         public string Issuer { get; set; }
 
-        public AuthorizationPolicy LoginPolicy { get; set; }
+//        public AuthorizationPolicy LoginPolicy { get; set; }
 
-        public AuthorizationPolicy SessionPolicy { get; set; }
+//        public AuthorizationPolicy SessionPolicy { get; set; }
 
-        public AuthorizationPolicy ManagementPolicy { get; set; }
+//        public AuthorizationPolicy ManagementPolicy { get; set; }
 
         public IList<SigningCredentials> SigningKeys { get; set; } = new List<SigningCredentials>();
 

@@ -3,7 +3,6 @@
 
 using System;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Service.Serialization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -14,14 +13,14 @@ namespace Microsoft.AspNetCore.Identity.Service
     {
         public void Configure(IdentityServiceOptions options)
         {
-            options.LoginPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
+            //options.LoginPolicy = new AuthorizationPolicyBuilder()
+            //    .RequireAuthenticatedUser()
+            //    .Build();
 
-            options.SessionPolicy = new AuthorizationPolicyBuilder()
-                .AddAuthenticationSchemes(IdentityServiceOptions.CookieAuthenticationScheme)
-                .RequireAuthenticatedUser()
-                .Build();
+            //options.SessionPolicy = new AuthorizationPolicyBuilder()
+            //    .AddAuthenticationSchemes(IdentityServiceOptions.CookieAuthenticationScheme)
+            //    .RequireAuthenticatedUser()
+            //    .Build();
 
             options.SerializationSettings = CreateDefault();
             options.SerializationSettings.Converters.Insert(0, new AuthorizationCodeConverter());

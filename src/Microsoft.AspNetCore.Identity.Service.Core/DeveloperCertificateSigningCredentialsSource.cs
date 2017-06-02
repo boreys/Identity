@@ -5,31 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
     public class DeveloperCertificateSigningCredentialsSource : ISigningCredentialsSource
     {
-        private readonly IHostingEnvironment _environment;
         private readonly ITimeStampManager _timeStampManager;
 
         public DeveloperCertificateSigningCredentialsSource(
-            IHostingEnvironment environment,
             ITimeStampManager timeStampManager)
         {
-            _environment = environment;
             _timeStampManager = timeStampManager;
         }
 
         public Task<IEnumerable<SigningCredentialsDescriptor>> GetCredentials()
         {
-            if (!_environment.IsDevelopment())
-            {
-                return Task.FromResult(Enumerable.Empty<SigningCredentialsDescriptor>());
-            }
-
             using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
             {
                 store.Open(OpenFlags.ReadOnly);

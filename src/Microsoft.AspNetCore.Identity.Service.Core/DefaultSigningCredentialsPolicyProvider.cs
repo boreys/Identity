@@ -5,25 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
     public class DefaultSigningCredentialsPolicyProvider : ISigningCredentialsPolicyProvider
     {
         private readonly IEnumerable<ISigningCredentialsSource> _sources;
-        private readonly IHostingEnvironment _environment;
         private SigningCredentialsDescriptor[] _credentials;
         private readonly ITimeStampManager _timeStampManager;
 
         public DefaultSigningCredentialsPolicyProvider(
             IEnumerable<ISigningCredentialsSource> sources,
-            ITimeStampManager timeStampManager,
-            IHostingEnvironment environment)
+            ITimeStampManager timeStampManager)
         {
             _sources = sources;
             _timeStampManager = timeStampManager;
-            _environment = environment;
         }
 
         public async Task<IEnumerable<SigningCredentialsDescriptor>> GetAllCredentialsAsync()
@@ -46,11 +42,6 @@ namespace Microsoft.AspNetCore.Identity.Service
                 var finalList = new List<SigningCredentialsDescriptor>();
                 foreach (var credential in credentialsFromSources.SelectMany(c => c))
                 {
-                    if (!_environment.IsDevelopment() && credential.Id.StartsWith("IdentityService.Development"))
-                    {
-                        continue;
-                    }
-
                     finalList.Add(credential);
                 }
 

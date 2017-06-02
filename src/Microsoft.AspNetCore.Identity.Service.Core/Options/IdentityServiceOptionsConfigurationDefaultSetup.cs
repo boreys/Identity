@@ -3,7 +3,6 @@
 
 using System;
 using Microsoft.AspNetCore.Certificates.Configuration;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options.Infrastructure;
@@ -16,23 +15,22 @@ namespace Microsoft.AspNetCore.Identity.Service.Core
         public const string SectionKey = "Microsoft:AspNetCore:Identity:Service";
 
         public IdentityServiceOptionsConfigurationDefaultSetup(
-            IConfiguration configuration, ILoggerFactory loggerFactory, IHostingEnvironment environment)
-            : base(options => ConfigureOptions(options, configuration, loggerFactory, environment.EnvironmentName))
+            IConfiguration configuration, ILoggerFactory loggerFactory)
+            : base(options => ConfigureOptions(options, configuration, loggerFactory))
         {
         }
 
         private static void ConfigureOptions(
             IdentityServiceOptions options,
             IConfiguration configuration,
-            ILoggerFactory loggerFactory,
-            string environmentName)
+            ILoggerFactory loggerFactory)
         {
             var section = configuration.GetSection(SectionKey);
             var issuer = section.GetValue<string>("Issuer");
             var certificatesSection = section.GetSection("SigningKeys:SigningCertificates");
             if (certificatesSection != null)
             {
-                var certificateLoader = new CertificateLoader(configuration.GetSection("Microsoft:AspNetCore:Certificates"), loggerFactory, environmentName);
+                var certificateLoader = new CertificateLoader(configuration.GetSection("Microsoft:AspNetCore:Certificates"), loggerFactory);
                 var certificates = certificateLoader.Load(certificatesSection);
                 foreach (var certificate in certificates)
                 {

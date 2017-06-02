@@ -3,7 +3,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity.Service.Core;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace Microsoft.AspNetCore.Identity.Service

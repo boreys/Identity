@@ -4,7 +4,6 @@
 using System.Buffers;
 using System.IO;
 using System.Text;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
