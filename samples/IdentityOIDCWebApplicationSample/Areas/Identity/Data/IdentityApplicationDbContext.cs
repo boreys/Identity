@@ -10,9 +10,9 @@ using IdentityOIDCWebApplicationSample.Identity.Models;
 
 namespace IdentityOIDCWebApplicationSample.Identity.Data
 {
-    public class IdentityServiceDbContext : IdentityServiceDbContext<ApplicationUser, IdentityServiceApplication>
+    public class IdentityApplicationDbContext : IdentityClientApplicationsDbContext<ApplicationUser, IdentityClientApplication>
     {
-        public IdentityServiceDbContext(DbContextOptions<IdentityServiceDbContext> options)
+        public IdentityApplicationDbContext(DbContextOptions<IdentityApplicationDbContext> options)
             : base(options)
         {
         }

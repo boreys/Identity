@@ -6,34 +6,34 @@ using System.Collections.Generic;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityServiceApplication : IdentityServiceApplication<string>
+    public class IdentityClientApplication : IdentityClientApplication<string>
     {
     }
 
-    public class IdentityServiceApplication<TUserKey> :
-        IdentityServiceApplication<string, TUserKey>
+    public class IdentityClientApplication<TUserKey> :
+        IdentityClientApplication<string, TUserKey>
         where TUserKey : IEquatable<TUserKey>
     {
     }
 
-    public class IdentityServiceApplication<TApplicationKey, TUserKey> :
-        IdentityServiceApplication<
+    public class IdentityClientApplication<TApplicationKey, TUserKey> :
+        IdentityClientApplication<
             TApplicationKey,
             TUserKey,
-            IdentityServiceScope<TApplicationKey>,
-            IdentityServiceApplicationClaim<TApplicationKey>,
-            IdentityServiceRedirectUri<TApplicationKey>>
+            IdentityClientApplicationScope<TApplicationKey>,
+            IdentityClientApplicationClaim<TApplicationKey>,
+            IdentityClientApplicationRedirectUri<TApplicationKey>>
         where TApplicationKey : IEquatable<TApplicationKey>
         where TUserKey : IEquatable<TUserKey>
     {
     }
 
-    public class IdentityServiceApplication<TKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
+    public class IdentityClientApplication<TKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
         where TKey : IEquatable<TKey>
         where TUserKey : IEquatable<TUserKey>
-        where TScope : IdentityServiceScope<TKey>
-        where TApplicationClaim : IdentityServiceApplicationClaim<TKey>
-        where TRedirectUri : IdentityServiceRedirectUri<TKey>
+        where TScope : IdentityClientApplicationScope<TKey>
+        where TApplicationClaim : IdentityClientApplicationClaim<TKey>
+        where TRedirectUri : IdentityClientApplicationRedirectUri<TKey>
     {
         public TKey Id { get; set; }
         public string Name { get; set; }

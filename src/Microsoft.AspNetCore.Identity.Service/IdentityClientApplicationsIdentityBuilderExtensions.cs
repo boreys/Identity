@@ -23,11 +23,11 @@ using Microsoft.Extensions.Options.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class IdentityServiceServiceCollectionExtensions
+    public static class IdentityClientApplicationsIdentityBuilderExtensions
     {
-        public static IIdentityServiceBuilder AddApplications<TApplication>(
+        public static IIdentityClientApplicationsBuilder AddApplications<TApplication>(
             this IdentityBuilder builder,
-            Action<IdentityServiceOptions> configure)
+            Action<AspNetCore.Identity.Service.TokenOptions> configure)
             where TApplication : class
         {
             if (builder == null)
@@ -40,13 +40,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configure));
             }
 
-            var identityServiceBuilder = builder.AddApplications<TApplication>();
+            var identityApplications = builder.AddApplications<TApplication>();
             builder.Services.Configure(configure);
 
-            return identityServiceBuilder;
+            return identityApplications;
         }
 
-        public static IIdentityServiceBuilder AddApplications<TApplication>(
+        public static IIdentityClientApplicationsBuilder AddApplications<TApplication>(
             this IdentityBuilder builder)
             where TApplication : class
         {
@@ -65,17 +65,17 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAdd(CreateServices<TApplication>());
 
             // Configuration
-            services.AddTransient<ConfigureDefaultOptions<IdentityServiceOptions>, IdentityServiceOptionsConfigurationDefaultSetup>();
-            services.AddTransient<IConfigureOptions<IdentityServiceOptions>, IdentityServiceOptionsDefaultSetup>();
-            services.AddTransient<IConfigureOptions<IdentityServiceOptions>, IdentityServiceOptionsSetup>();
+            services.AddTransient<ConfigureDefaultOptions<AspNetCore.Identity.Service.TokenOptions>, IdentityTokensOptionsConfigurationDefaultSetup>();
+            services.AddTransient<IConfigureOptions<AspNetCore.Identity.Service.TokenOptions>, IdentityTokensOptionsDefaultSetup>();
+            services.AddTransient<IConfigureOptions<AspNetCore.Identity.Service.TokenOptions>, TokenOptionsSetup>();
 
-            services.AddCookieAuthentication(IdentityServiceOptions.CookieAuthenticationScheme, options =>
+            services.AddCookieAuthentication(AspNetCore.Identity.Service.TokenOptions.CookieAuthenticationScheme, options =>
             {
                 options.CookieHttpOnly = true;
                 options.CookieSecure = CookieSecurePolicy.Always;
                 options.CookiePath = "/tfp/Identity/signinsignup";
                 options.AccessDeniedPath = "/tfp/Identity/signinsignup/Account/AccessDenied";
-                options.CookieName = IdentityServiceOptions.AuthenticationCookieName;
+                options.CookieName = AspNetCore.Identity.Service.TokenOptions.AuthenticationCookieName;
             });
             services.ConfigureApplicationCookie(options =>
             {
@@ -87,7 +87,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure<CookieAuthenticationOptions>(IdentityConstants.TwoFactorRememberMeScheme, options => options.CookiePath = $"/tfp/Identity");
             services.Configure<CookieAuthenticationOptions>(IdentityConstants.TwoFactorUserIdScheme, options => options.CookiePath = $"/tfp/Identity");
 
-            services.AddTransient<IConfigureOptions<AuthorizationOptions>, IdentityServiceAuthorizationOptionsSetup>();
+            services.AddTransient<IConfigureOptions<AuthorizationOptions>, IdentityClientApplicationsAuthorizationOptionsSetup>();
 
             // Other stuff
             services.AddSingleton<IAuthorizationResponseFactory, DefaultAuthorizationResponseFactory>();
@@ -120,7 +120,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IRedirectUriResolver, ClientApplicationValidator<TApplication>>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            return new IdentityServiceBuilder<TApplication>(builder);
+            return new IdentityClientApplicationsBuilder<TApplication>(builder);
         }
 
         private static IEnumerable<ServiceDescriptor> CreateServices<TApplication>()

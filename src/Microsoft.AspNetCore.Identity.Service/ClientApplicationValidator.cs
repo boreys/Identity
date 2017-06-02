@@ -12,13 +12,13 @@ namespace Microsoft.AspNetCore.Identity.Service
     public class ClientApplicationValidator<TApplication> : IClientIdValidator, IRedirectUriResolver, IScopeResolver
         where TApplication : class
     {
-        private readonly IOptions<IdentityServiceOptions> _options;
+        private readonly IOptions<TokenOptions> _options;
         private readonly SessionManager _sessionManager;
         private readonly ApplicationManager<TApplication> _applicationManager;
         private readonly ProtocolErrorProvider _errorProvider;
 
         public ClientApplicationValidator(
-            IOptions<IdentityServiceOptions> options,
+            IOptions<TokenOptions> options,
             SessionManager sessionManager,
             ApplicationManager<TApplication> applicationManager,
             ProtocolErrorProvider errorProvider)
@@ -51,7 +51,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             {
                 foreach (var identity in sessions.Identities)
                 {
-                    if (identity.HasClaim(IdentityServiceClaimTypes.LogoutRedirectUri, logoutUrl))
+                    if (identity.HasClaim(TokenClaimTypes.LogoutRedirectUri, logoutUrl))
                     {
                         return RedirectUriResolutionResult.Valid(logoutUrl);
                     }
@@ -62,8 +62,8 @@ namespace Microsoft.AspNetCore.Identity.Service
 
             foreach (var identity in sessions.Identities)
             {
-                if (identity.HasClaim(IdentityServiceClaimTypes.ClientId, clientId) &&
-                    identity.HasClaim(IdentityServiceClaimTypes.LogoutRedirectUri, logoutUrl))
+                if (identity.HasClaim(TokenClaimTypes.ClientId, clientId) &&
+                    identity.HasClaim(TokenClaimTypes.LogoutRedirectUri, logoutUrl))
                 {
                     return RedirectUriResolutionResult.Valid(logoutUrl);
                 }

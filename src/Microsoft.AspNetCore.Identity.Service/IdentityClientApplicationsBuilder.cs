@@ -6,11 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    internal class IdentityServiceBuilder<TApplication> : IIdentityServiceBuilder
+    internal class IdentityClientApplicationsBuilder<TApplication> : IIdentityClientApplicationsBuilder
     {
         private readonly IdentityBuilder _builder;
 
-        public IdentityServiceBuilder(IdentityBuilder builder)
+        public IdentityClientApplicationsBuilder(IdentityBuilder builder)
         {
             _builder = builder;
         }

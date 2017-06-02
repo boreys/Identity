@@ -9,16 +9,16 @@ using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityServiceOptionsDefaultSetup : IConfigureOptions<IdentityServiceOptions>
+    public class IdentityTokensOptionsDefaultSetup : IConfigureOptions<TokenOptions>
     {
-        public void Configure(IdentityServiceOptions options)
+        public void Configure(TokenOptions options)
         {
             //options.LoginPolicy = new AuthorizationPolicyBuilder()
             //    .RequireAuthenticatedUser()
             //    .Build();
 
             //options.SessionPolicy = new AuthorizationPolicyBuilder()
-            //    .AddAuthenticationSchemes(IdentityServiceOptions.CookieAuthenticationScheme)
+            //    .AddAuthenticationSchemes(TokenOptions.CookieAuthenticationScheme)
             //    .RequireAuthenticatedUser()
             //    .Build();
 
@@ -32,15 +32,15 @@ namespace Microsoft.AspNetCore.Identity.Service
             options.IdTokenOptions = CreateIdTokenOptions(TimeSpan.FromHours(2), TimeSpan.Zero);
         }
 
-        private static TokenOptions CreateAuthorizationCodeOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
+        private static TokenClaimsOptions CreateAuthorizationCodeOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
         {
             var userClaims = new TokenMapping("user");
-            userClaims.AddSingle(IdentityServiceClaimTypes.UserId, ClaimTypes.NameIdentifier);
+            userClaims.AddSingle(TokenClaimTypes.UserId, ClaimTypes.NameIdentifier);
 
             var applicationClaims = new TokenMapping("application");
-            applicationClaims.AddSingle(IdentityServiceClaimTypes.ClientId);
+            applicationClaims.AddSingle(TokenClaimTypes.ClientId);
 
-            return new TokenOptions()
+            return new TokenClaimsOptions()
             {
                 UserClaims = userClaims,
                 ApplicationClaims = applicationClaims,
@@ -49,14 +49,14 @@ namespace Microsoft.AspNetCore.Identity.Service
             };
         }
 
-        private static TokenOptions CreateAccessTokenOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
+        private static TokenClaimsOptions CreateAccessTokenOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
         {
             var userClaims = new TokenMapping("user");
-            userClaims.AddSingle(IdentityServiceClaimTypes.Subject, ClaimTypes.NameIdentifier);
+            userClaims.AddSingle(TokenClaimTypes.Subject, ClaimTypes.NameIdentifier);
 
             var applicationClaims = new TokenMapping("application");
 
-            return new TokenOptions()
+            return new TokenClaimsOptions()
             {
                 UserClaims = userClaims,
                 ApplicationClaims = applicationClaims,
@@ -65,15 +65,15 @@ namespace Microsoft.AspNetCore.Identity.Service
             };
         }
 
-        private static TokenOptions CreateRefreshTokenOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
+        private static TokenClaimsOptions CreateRefreshTokenOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
         {
             var userClaims = new TokenMapping("user");
-            userClaims.AddSingle(IdentityServiceClaimTypes.UserId, ClaimTypes.NameIdentifier);
+            userClaims.AddSingle(TokenClaimTypes.UserId, ClaimTypes.NameIdentifier);
 
             var applicationClaims = new TokenMapping("application");
-            applicationClaims.AddSingle(IdentityServiceClaimTypes.ClientId, IdentityServiceClaimTypes.ClientId);
+            applicationClaims.AddSingle(TokenClaimTypes.ClientId, TokenClaimTypes.ClientId);
 
-            return new TokenOptions()
+            return new TokenClaimsOptions()
             {
                 UserClaims = userClaims,
                 ApplicationClaims = applicationClaims,
@@ -82,14 +82,14 @@ namespace Microsoft.AspNetCore.Identity.Service
             };
         }
 
-        private static TokenOptions CreateIdTokenOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
+        private static TokenClaimsOptions CreateIdTokenOptions(TimeSpan notValidAfter, TimeSpan notValidBefore)
         {
             var userClaims = new TokenMapping("user");
 
             var applicationClaims = new TokenMapping("application");
-            applicationClaims.AddSingle(IdentityServiceClaimTypes.Audience, IdentityServiceClaimTypes.ClientId);
+            applicationClaims.AddSingle(TokenClaimTypes.Audience, TokenClaimTypes.ClientId);
 
-            return new TokenOptions()
+            return new TokenClaimsOptions()
             {
                 UserClaims = userClaims,
                 ApplicationClaims = applicationClaims,

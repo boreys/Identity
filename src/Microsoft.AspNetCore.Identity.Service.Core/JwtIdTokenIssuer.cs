@@ -15,27 +15,27 @@ namespace Microsoft.AspNetCore.Identity.Service
     {
         private static readonly string[] ClaimsToFilter = new string[]
         {
-            IdentityServiceClaimTypes.TokenUniqueId,
-            IdentityServiceClaimTypes.Issuer,
-            IdentityServiceClaimTypes.Audience,
-            IdentityServiceClaimTypes.IssuedAt,
-            IdentityServiceClaimTypes.Expires,
-            IdentityServiceClaimTypes.NotBefore,
-            IdentityServiceClaimTypes.Nonce,
-            IdentityServiceClaimTypes.CodeHash,
-            IdentityServiceClaimTypes.AccessTokenHash,
+            TokenClaimTypes.TokenUniqueId,
+            TokenClaimTypes.Issuer,
+            TokenClaimTypes.Audience,
+            TokenClaimTypes.IssuedAt,
+            TokenClaimTypes.Expires,
+            TokenClaimTypes.NotBefore,
+            TokenClaimTypes.Nonce,
+            TokenClaimTypes.CodeHash,
+            TokenClaimTypes.AccessTokenHash,
         };
 
         private readonly ITokenClaimsManager _claimsManager;
         private readonly JwtSecurityTokenHandler _handler;
-        private readonly IdentityServiceOptions _options;
+        private readonly TokenOptions _options;
         private readonly ISigningCredentialsPolicyProvider _credentialsProvider;
 
         public JwtIdTokenIssuer(
             ITokenClaimsManager claimsManager,
             ISigningCredentialsPolicyProvider credentialsProvider,
             JwtSecurityTokenHandler handler,
-            IOptions<IdentityServiceOptions> options)
+            IOptions<TokenOptions> options)
         {
             _claimsManager = claimsManager;
             _credentialsProvider = credentialsProvider;
@@ -62,22 +62,21 @@ namespace Microsoft.AspNetCore.Identity.Service
 
             var token = _handler.CreateJwtSecurityToken(descriptor);
 
-            token.Payload.Remove(IdentityServiceClaimTypes.JwtId);
-            //token.Payload.Add(IdentityServiceClaimTypes.JwtId, idToken.Id);
+            token.Payload.Remove(TokenClaimTypes.JwtId);
 
             if (idToken.Nonce != null)
             {
-                token.Payload.AddClaim(new Claim(IdentityServiceClaimTypes.Nonce, idToken.Nonce));
+                token.Payload.AddClaim(new Claim(TokenClaimTypes.Nonce, idToken.Nonce));
             }
 
             if (idToken.CodeHash != null)
             {
-                token.Payload.AddClaim(new Claim(IdentityServiceClaimTypes.CodeHash, idToken.CodeHash));
+                token.Payload.AddClaim(new Claim(TokenClaimTypes.CodeHash, idToken.CodeHash));
             }
 
             if (idToken.AccessTokenHash != null)
             {
-                token.Payload.AddClaim(new Claim(IdentityServiceClaimTypes.AccessTokenHash, idToken.AccessTokenHash));
+                token.Payload.AddClaim(new Claim(TokenClaimTypes.AccessTokenHash, idToken.AccessTokenHash));
             }
 
             context.AddToken(new TokenResult(idToken, _handler.WriteToken(token)));

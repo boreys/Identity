@@ -22,20 +22,20 @@ namespace Microsoft.AspNetCore.Identity.Service
         public async Task ValidateClientIdAsync_ChecksThatTheClientIdExist(bool exists)
         {
             // Arrange
-            var options = new IdentityServiceOptions();
-            var store = new Mock<IApplicationStore<IdentityServiceApplication>>();
+            var options = new TokenOptions();
+            var store = new Mock<IApplicationStore<IdentityClientApplication>>();
             store.Setup(s => s.FindByClientIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(exists ? new IdentityServiceApplication() : null);
+                .ReturnsAsync(exists ? new IdentityClientApplication() : null);
 
-            var manager = new ApplicationManager<IdentityServiceApplication>(
+            var manager = new ApplicationManager<IdentityClientApplication>(
                 Options.Create(new ApplicationOptions()),
                 store.Object,
-                Mock.Of<IPasswordHasher<IdentityServiceApplication>>(),
-                Array.Empty<IApplicationValidator<IdentityServiceApplication>>(),
-                Mock.Of<ILogger<ApplicationManager<IdentityServiceApplication>>>(),
+                Mock.Of<IPasswordHasher<IdentityClientApplication>>(),
+                Array.Empty<IApplicationValidator<IdentityClientApplication>>(),
+                Mock.Of<ILogger<ApplicationManager<IdentityClientApplication>>>(),
                 new ApplicationErrorDescriber());
 
-            var clientValidator = new ClientApplicationValidator<IdentityServiceApplication>(
+            var clientValidator = new ClientApplicationValidator<IdentityClientApplication>(
                 Options.Create(options),
                 GetSessionManager(),
                 manager,
@@ -52,23 +52,23 @@ namespace Microsoft.AspNetCore.Identity.Service
         public async Task ValidateClientCredentialsAsync_DelegatesToApplicationManager()
         {
             // Arrange
-            var options = new IdentityServiceOptions();
-            var store = new Mock<IApplicationStore<IdentityServiceApplication>>();
+            var options = new TokenOptions();
+            var store = new Mock<IApplicationStore<IdentityClientApplication>>();
             store.Setup(s => s.FindByClientIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new IdentityServiceApplication());
-            store.As<IApplicationClientSecretStore<IdentityServiceApplication>>()
-                .Setup(s => s.HasClientSecretAsync(It.IsAny<IdentityServiceApplication>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new IdentityClientApplication());
+            store.As<IApplicationClientSecretStore<IdentityClientApplication>>()
+                .Setup(s => s.HasClientSecretAsync(It.IsAny<IdentityClientApplication>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
 
-            var manager = new ApplicationManager<IdentityServiceApplication>(
+            var manager = new ApplicationManager<IdentityClientApplication>(
                 Options.Create(new ApplicationOptions()),
                 store.Object,
-                Mock.Of<IPasswordHasher<IdentityServiceApplication>>(),
-                Array.Empty<IApplicationValidator<IdentityServiceApplication>>(),
-                Mock.Of<ILogger<ApplicationManager<IdentityServiceApplication>>>(),
+                Mock.Of<IPasswordHasher<IdentityClientApplication>>(),
+                Array.Empty<IApplicationValidator<IdentityClientApplication>>(),
+                Mock.Of<ILogger<ApplicationManager<IdentityClientApplication>>>(),
                 new ApplicationErrorDescriber());
 
-            var clientValidator = new ClientApplicationValidator<IdentityServiceApplication>(
+            var clientValidator = new ClientApplicationValidator<IdentityClientApplication>(
                 Options.Create(options),
                 GetSessionManager(),
                 manager,
@@ -84,7 +84,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         private SessionManager GetSessionManager()
         {
             return new TestSessionManager(
-                Mock.Of<IOptions<IdentityServiceOptions>>(),
+                Mock.Of<IOptions<TokenOptions>>(),
                 Mock.Of<IOptions<IdentityOptions>>(),
                 Mock.Of<IOptionsSnapshot<CookieAuthenticationOptions>>(),
                 new TimeStampManager(),
@@ -95,7 +95,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         private class TestSessionManager : SessionManager
         {
             public TestSessionManager(
-                IOptions<IdentityServiceOptions> options,
+                IOptions<TokenOptions> options,
                 IOptions<IdentityOptions> identityOptions,
                 IOptionsSnapshot<CookieAuthenticationOptions> cookieOptions,
                 ITimeStampManager timeStampManager,

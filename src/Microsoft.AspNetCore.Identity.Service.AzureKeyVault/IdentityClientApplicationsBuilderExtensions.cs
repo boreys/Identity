@@ -9,9 +9,9 @@ using Microsoft.Extensions.Options.Infrastructure;
 
 namespace Microsoft.AspNetCore.Identity.Service.AzureKeyVault
 {
-    public static class IdentityServiceBuilderExtensions
+    public static class IdentityClientApplicationsBuilderExtensions
     {
-        public static IIdentityServiceBuilder AddKeyVault(this IIdentityServiceBuilder builder)
+        public static IIdentityClientApplicationsBuilder AddKeyVault(this IIdentityClientApplicationsBuilder builder)
         {
             if (builder == null)
             {
@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Identity.Service.AzureKeyVault
             return builder;
         }
 
-        public static IIdentityServiceBuilder AddKeyVault(this IIdentityServiceBuilder builder, Action<KeyVaultSigningCredentialsSourceOptions> configure)
+        public static IIdentityClientApplicationsBuilder AddKeyVault(this IIdentityClientApplicationsBuilder builder, Action<KeyVaultSigningCredentialsSourceOptions> configure)
         {
             if (builder == null)
             {

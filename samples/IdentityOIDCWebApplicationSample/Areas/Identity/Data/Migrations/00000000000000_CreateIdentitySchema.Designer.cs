@@ -8,7 +8,7 @@ using IdentityOIDCWebApplicationSample.Identity.Data;
 
 namespace IdentityOIDCWebApplicationSample.Identity.Data.Migrations
 {
-    [DbContext(typeof(IdentityServiceDbContext))]
+    [DbContext(typeof(IdentityApplicationDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

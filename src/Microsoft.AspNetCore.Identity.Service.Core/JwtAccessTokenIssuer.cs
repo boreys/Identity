@@ -15,17 +15,17 @@ namespace Microsoft.AspNetCore.Identity.Service
     {
         private static readonly string[] ClaimsToFilter = new string[]
         {
-            IdentityServiceClaimTypes.TokenUniqueId,
-            IdentityServiceClaimTypes.ObjectId,
-            IdentityServiceClaimTypes.Issuer,
-            IdentityServiceClaimTypes.Audience,
-            IdentityServiceClaimTypes.IssuedAt,
-            IdentityServiceClaimTypes.Expires,
-            IdentityServiceClaimTypes.NotBefore,
+            TokenClaimTypes.TokenUniqueId,
+            TokenClaimTypes.ObjectId,
+            TokenClaimTypes.Issuer,
+            TokenClaimTypes.Audience,
+            TokenClaimTypes.IssuedAt,
+            TokenClaimTypes.Expires,
+            TokenClaimTypes.NotBefore,
         };
 
         private readonly JwtSecurityTokenHandler _handler;
-        private readonly IdentityServiceOptions _options;
+        private readonly TokenOptions _options;
         private readonly ITokenClaimsManager _claimsManager;
         private readonly ISigningCredentialsPolicyProvider _credentialsProvider;
 
@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             ITokenClaimsManager claimsManager,
             ISigningCredentialsPolicyProvider credentialsProvider,
             JwtSecurityTokenHandler handler,
-            IOptions<IdentityServiceOptions> options)
+            IOptions<TokenOptions> options)
         {
             _claimsManager = claimsManager;
             _credentialsProvider = credentialsProvider;
@@ -59,9 +59,8 @@ namespace Microsoft.AspNetCore.Identity.Service
 
             var token = _handler.CreateJwtSecurityToken(descriptor);
 
-            token.Payload.Remove(IdentityServiceClaimTypes.JwtId);
-            token.Payload.Remove(IdentityServiceClaimTypes.IssuedAt);
-            //token.Payload.Add(IdentityServiceClaimTypes.JwtId, accessToken.Id);
+            token.Payload.Remove(TokenClaimTypes.JwtId);
+            token.Payload.Remove(TokenClaimTypes.IssuedAt);
 
             context.AddToken(new TokenResult(accessToken, _handler.WriteToken(token), TokenKinds.Bearer));
         }

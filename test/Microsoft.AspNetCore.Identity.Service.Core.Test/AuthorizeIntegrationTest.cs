@@ -114,7 +114,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         }
 
         private static ClaimsPrincipal CreateApplication(string clientId) =>
-            new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(IdentityServiceClaimTypes.ClientId, clientId) }));
+            new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(TokenClaimTypes.ClientId, clientId) }));
 
         private static ClaimsPrincipal CreateUser(string userName) =>
             new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, userName) }));
@@ -145,7 +145,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 new ProtocolErrorProvider());
         }
 
-        private static DefaultSigningCredentialsPolicyProvider GetCredentialsPolicy(IOptionsSnapshot<IdentityServiceOptions> options, TimeStampManager timeStampManager) =>
+        private static DefaultSigningCredentialsPolicyProvider GetCredentialsPolicy(IOptionsSnapshot<TokenOptions> options, TimeStampManager timeStampManager) =>
             new DefaultSigningCredentialsPolicyProvider(
                 new List<ISigningCredentialsSource> {
                             new DefaultSigningCredentialsSource(options, timeStampManager)
@@ -154,7 +154,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 new HostingEnvironment());
 
         private static ITokenClaimsManager GetClaimsManager(
-            IOptions<IdentityServiceOptions> options)
+            IOptions<TokenOptions> options)
         {
             return new DefaultTokenClaimsManager(
                 new List<ITokenClaimsProvider>{
@@ -167,17 +167,17 @@ namespace Microsoft.AspNetCore.Identity.Service
                 });
         }
 
-        private static IOptionsSnapshot<IdentityServiceOptions> CreateOptions()
+        private static IOptionsSnapshot<TokenOptions> CreateOptions()
         {
-            var identityServiceOptions = new IdentityServiceOptions();
-            var optionsSetup = new IdentityServiceOptionsDefaultSetup();
+            var identityServiceOptions = new TokenOptions();
+            var optionsSetup = new IdentityTokensOptionsDefaultSetup();
             optionsSetup.Configure(identityServiceOptions);
 
             identityServiceOptions.SigningKeys.Add(new SigningCredentials(CryptoUtilities.CreateTestKey(), "RS256"));
             identityServiceOptions.Issuer = "http://server.example.com";
             identityServiceOptions.IdTokenOptions.UserClaims.AddSingle("sub", ClaimTypes.NameIdentifier);
 
-            var mock = new Mock<IOptionsSnapshot<IdentityServiceOptions>>();
+            var mock = new Mock<IOptionsSnapshot<TokenOptions>>();
             mock.Setup(m => m.Get(It.IsAny<string>())).Returns(identityServiceOptions);
             mock.Setup(m => m.Value).Returns(identityServiceOptions);
 

@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public interface IIdentityServiceBuilder
+    public interface IIdentityClientApplicationsBuilder
     {
         IServiceCollection Services { get; }
         Type ApplicationType { get; }

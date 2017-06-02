@@ -3,7 +3,7 @@
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityServiceRedirectUri<TApplicationKey>
+    public class IdentityClientApplicationRedirectUri<TApplicationKey>
     {
         public string Id { get; set; }
         public TApplicationKey ApplicationId { get; set; }

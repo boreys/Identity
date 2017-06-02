@@ -15,24 +15,24 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         private static IEnumerable<Claim> ValidateClaims(IEnumerable<Claim> claims)
         {
-            EnsureUniqueClaim(IdentityServiceClaimTypes.UserId, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.ClientId, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.RedirectUri, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.Scope, claims);
-            EnsureRequiredClaim(IdentityServiceClaimTypes.GrantedToken, claims);
+            EnsureUniqueClaim(TokenClaimTypes.UserId, claims);
+            EnsureUniqueClaim(TokenClaimTypes.ClientId, claims);
+            EnsureUniqueClaim(TokenClaimTypes.RedirectUri, claims);
+            EnsureUniqueClaim(TokenClaimTypes.Scope, claims);
+            EnsureRequiredClaim(TokenClaimTypes.GrantedToken, claims);
 
             return claims;
         }
 
         public override string Kind => TokenTypes.AuthorizationCode;
-        public string UserId => GetClaimValue(IdentityServiceClaimTypes.UserId);
-        public string ClientId => GetClaimValue(IdentityServiceClaimTypes.ClientId);
-        public string Resource => GetClaimValue(IdentityServiceClaimTypes.Resource);
-        public string RedirectUri => GetClaimValue(IdentityServiceClaimTypes.RedirectUri);
-        public string CodeChallenge => GetClaimValue(IdentityServiceClaimTypes.CodeChallenge);
-        public string CodeChallengeMethod => GetClaimValue(IdentityServiceClaimTypes.CodeChallengeMethod);
-        public IEnumerable<string> Scopes => GetClaimValuesOrEmpty(IdentityServiceClaimTypes.Scope);
-        public IEnumerable<string> GrantedTokens => GetClaimValuesOrEmpty(IdentityServiceClaimTypes.GrantedToken);
-        public string Nonce => GetClaimValue(IdentityServiceClaimTypes.Nonce);
+        public string UserId => GetClaimValue(TokenClaimTypes.UserId);
+        public string ClientId => GetClaimValue(TokenClaimTypes.ClientId);
+        public string Resource => GetClaimValue(TokenClaimTypes.Resource);
+        public string RedirectUri => GetClaimValue(TokenClaimTypes.RedirectUri);
+        public string CodeChallenge => GetClaimValue(TokenClaimTypes.CodeChallenge);
+        public string CodeChallengeMethod => GetClaimValue(TokenClaimTypes.CodeChallengeMethod);
+        public IEnumerable<string> Scopes => GetClaimValuesOrEmpty(TokenClaimTypes.Scope);
+        public IEnumerable<string> GrantedTokens => GetClaimValuesOrEmpty(TokenClaimTypes.GrantedToken);
+        public string Nonce => GetClaimValue(TokenClaimTypes.Nonce);
     }
 }

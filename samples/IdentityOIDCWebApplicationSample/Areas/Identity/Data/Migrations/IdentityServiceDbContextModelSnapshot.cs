@@ -8,7 +8,7 @@ using IdentityOIDCWebApplicationSample.Identity.Data;
 
 namespace IdentityOIDCWebApplicationSample.Identity.Data.Migrations
 {
-    [DbContext(typeof(IdentityServiceDbContext))]
+    [DbContext(typeof(IdentityApplicationDbContext))]
     partial class IdentityServiceDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

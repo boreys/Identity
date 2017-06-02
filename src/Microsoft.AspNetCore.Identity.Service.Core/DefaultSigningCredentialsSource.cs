@@ -12,11 +12,11 @@ namespace Microsoft.AspNetCore.Identity.Service.Core
 {
     public class DefaultSigningCredentialsSource : ISigningCredentialsSource
     {
-        private readonly IOptionsSnapshot<IdentityServiceOptions> _options;
+        private readonly IOptionsSnapshot<TokenOptions> _options;
         private readonly ITimeStampManager _timeStampManager;
 
         public DefaultSigningCredentialsSource(
-            IOptionsSnapshot<IdentityServiceOptions> options,
+            IOptionsSnapshot<TokenOptions> options,
             ITimeStampManager timeStampManager)
         {
             _options = options;
@@ -29,7 +29,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Core
             return Task.FromResult(descriptors);
         }
 
-        private IEnumerable<SigningCredentialsDescriptor> GetDescriptors(IdentityServiceOptions options)
+        private IEnumerable<SigningCredentialsDescriptor> GetDescriptors(TokenOptions options)
         {
             return options.SigningKeys.Select(sk =>
             {

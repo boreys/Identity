@@ -6,11 +6,11 @@ using System.Security.Claims;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityServiceApplicationClaim : IdentityServiceApplicationClaim<string>
+    public class IdentityClientApplicationClaim : IdentityClientApplicationClaim<string>
     {
     }
 
-    public class IdentityServiceApplicationClaim<TApplicationKey> where TApplicationKey : IEquatable<TApplicationKey>
+    public class IdentityClientApplicationClaim<TApplicationKey> where TApplicationKey : IEquatable<TApplicationKey>
     {
         public int Id { get; set; }
         public TApplicationKey ApplicationId { get; set; }

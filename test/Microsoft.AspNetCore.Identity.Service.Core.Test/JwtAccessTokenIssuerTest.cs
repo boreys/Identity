@@ -66,7 +66,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 new JwtSecurityTokenHandler(), options);
             var context = GetTokenGenerationContext(
                 new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user") })),
-                new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(IdentityServiceClaimTypes.ClientId, "clientId") })));
+                new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(TokenClaimTypes.ClientId, "clientId") })));
 
             context.InitializeForToken(TokenTypes.AccessToken);
 
@@ -94,7 +94,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             Assert.Equal(expectedDateTime.UtcDateTime, jwtToken.ValidFrom);
 
             var tokenScopes = jwtToken.Claims
-                .Where(c => c.Type == IdentityServiceClaimTypes.Scope)
+                .Where(c => c.Type == TokenClaimTypes.Scope)
                 .Select(c => c.Value).OrderBy(c => c)
                 .ToArray();
 
@@ -115,7 +115,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 new JwtSecurityTokenHandler(), options);
             var context = GetTokenGenerationContext(
                 new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user") })),
-                new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(IdentityServiceClaimTypes.ClientId, "clientId") })));
+                new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(TokenClaimTypes.ClientId, "clientId") })));
 
             context.InitializeForToken(TokenTypes.AccessToken);
 
@@ -181,18 +181,18 @@ namespace Microsoft.AspNetCore.Identity.Service
             return manager.Object;
         }
 
-        private IOptions<IdentityServiceOptions> GetOptions()
+        private IOptions<TokenOptions> GetOptions()
         {
-            var IdentityServiceOptions = new IdentityServiceOptions()
+            var IdentityServiceOptions = new TokenOptions()
             {
                 Issuer = "http://www.example.com/issuer"
             };
             IdentityServiceOptions.SigningKeys.Add(new SigningCredentials(CryptoUtilities.CreateTestKey(), "RS256"));
 
-            var optionsSetup = new IdentityServiceOptionsDefaultSetup();
+            var optionsSetup = new IdentityTokensOptionsDefaultSetup();
             optionsSetup.Configure(IdentityServiceOptions);
 
-            var mock = new Mock<IOptions<IdentityServiceOptions>>();
+            var mock = new Mock<IOptions<TokenOptions>>();
             mock.Setup(m => m.Value).Returns(IdentityServiceOptions);
 
             return mock.Object;
@@ -214,10 +214,10 @@ namespace Microsoft.AspNetCore.Identity.Service
         }
 
         private ISigningCredentialsPolicyProvider GetSigningPolicy(
-            IOptions<IdentityServiceOptions> options,
+            IOptions<TokenOptions> options,
             ITimeStampManager timeStampManager)
         {
-            var mock = new Mock<IOptionsSnapshot<IdentityServiceOptions>>();
+            var mock = new Mock<IOptionsSnapshot<TokenOptions>>();
             mock.Setup(m => m.Value).Returns(options.Value);
             mock.Setup(m => m.Get(It.IsAny<string>())).Returns(options.Value);
 

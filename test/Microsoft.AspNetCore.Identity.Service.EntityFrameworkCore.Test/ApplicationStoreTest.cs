@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
 {
-    public class ApplicationStoreTest : IdentityServiceSpecificationTestBase<IdentityUser, IdentityServiceApplication>, IClassFixture<ScratchDatabaseFixture>
+    public class ApplicationStoreTest : IdentityServiceSpecificationTestBase<IdentityUser, IdentityClientApplication>, IClassFixture<ScratchDatabaseFixture>
     {
         private readonly ScratchDatabaseFixture _fixture;
         public static readonly ApplicationErrorDescriber ErrorDescriber = new ApplicationErrorDescriber();
@@ -26,11 +26,11 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
 
         protected override void AddApplicationStore(IServiceCollection services, object context = null)
         {
-            services.AddSingleton<IApplicationStore<IdentityServiceApplication>>(
-                new ApplicationStore<IdentityServiceApplication, IdentityServiceScope<string>, IdentityServiceApplicationClaim<string>, IdentityServiceRedirectUri<string>, IdentityServiceDbContext<IdentityUser, IdentityServiceApplication>, string, string>((IdentityServiceDbContext<IdentityUser, IdentityServiceApplication>)context, new ApplicationErrorDescriber()));
+            services.AddSingleton<IApplicationStore<IdentityClientApplication>>(
+                new ApplicationStore<IdentityClientApplication, IdentityClientApplicationScope<string>, IdentityClientApplicationClaim<string>, IdentityClientApplicationRedirectUri<string>, IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication>, string, string>((IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication>)context, new ApplicationErrorDescriber()));
         }
 
-        public IdentityServiceDbContext<IdentityUser, IdentityServiceApplication> CreateContext(bool delete = false)
+        public IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication> CreateContext(bool delete = false)
         {
             var db = DbUtil.Create<TestContext>(_fixture.ConnectionString);
             if (delete)
@@ -41,9 +41,9 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
             return db;
         }
 
-        protected override IdentityServiceApplication CreateTestApplication()
+        protected override IdentityClientApplication CreateTestApplication()
         {
-            return new IdentityServiceApplication
+            return new IdentityClientApplication
             {
                 Id = Guid.NewGuid().ToString(),
                 ClientId = Guid.NewGuid().ToString(),
@@ -56,7 +56,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
             return CreateContext();
         }
 
-        private class TestContext : IdentityServiceDbContext<IdentityUser, IdentityServiceApplication>
+        private class TestContext : IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication>
         {
             public TestContext(DbContextOptions options) : base(options) { }
         }

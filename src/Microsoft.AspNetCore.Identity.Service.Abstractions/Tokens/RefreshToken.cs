@@ -15,20 +15,20 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         private static IEnumerable<Claim> ValidateClaims(IEnumerable<Claim> claims)
         {
-            EnsureUniqueClaim(IdentityServiceClaimTypes.UserId, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.ClientId, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.Scope, claims);
-            EnsureRequiredClaim(IdentityServiceClaimTypes.GrantedToken, claims);
+            EnsureUniqueClaim(TokenClaimTypes.UserId, claims);
+            EnsureUniqueClaim(TokenClaimTypes.ClientId, claims);
+            EnsureUniqueClaim(TokenClaimTypes.Scope, claims);
+            EnsureRequiredClaim(TokenClaimTypes.GrantedToken, claims);
 
             return claims;
         }
 
         public override string Kind => TokenTypes.RefreshToken;
-        public string UserId => GetClaimValue(IdentityServiceClaimTypes.UserId);
-        public string ClientId => GetClaimValue(IdentityServiceClaimTypes.ClientId);
-        public string Resource => GetClaimValue(IdentityServiceClaimTypes.Resource);
-        public string Issuer => GetClaimValue(IdentityServiceClaimTypes.Issuer);
-        public IEnumerable<string> GrantedTokens => GetClaimValuesOrEmpty(IdentityServiceClaimTypes.GrantedToken);
-        public IEnumerable<string> Scopes => GetClaimValuesOrEmpty(IdentityServiceClaimTypes.Scope);
+        public string UserId => GetClaimValue(TokenClaimTypes.UserId);
+        public string ClientId => GetClaimValue(TokenClaimTypes.ClientId);
+        public string Resource => GetClaimValue(TokenClaimTypes.Resource);
+        public string Issuer => GetClaimValue(TokenClaimTypes.Issuer);
+        public IEnumerable<string> GrantedTokens => GetClaimValuesOrEmpty(TokenClaimTypes.GrantedToken);
+        public IEnumerable<string> Scopes => GetClaimValuesOrEmpty(TokenClaimTypes.Scope);
     }
 }

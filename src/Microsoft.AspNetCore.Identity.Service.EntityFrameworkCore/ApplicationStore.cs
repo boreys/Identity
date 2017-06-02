@@ -18,10 +18,10 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
         IApplicationClientSecretStore<TApplication>,
         IApplicationScopeStore<TApplication>,
         IQueryableApplicationStore<TApplication>
-        where TApplication : IdentityServiceApplication<TKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
-        where TScope : IdentityServiceScope<TKey>, new()
-        where TApplicationClaim : IdentityServiceApplicationClaim<TKey>, new()
-        where TRedirectUri : IdentityServiceRedirectUri<TKey>, new()
+        where TApplication : IdentityClientApplication<TKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
+        where TScope : IdentityClientApplicationScope<TKey>, new()
+        where TApplicationClaim : IdentityClientApplicationClaim<TKey>, new()
+        where TRedirectUri : IdentityClientApplicationRedirectUri<TKey>, new()
         where TContext : DbContext
         where TKey : IEquatable<TKey>
         where TUserKey : IEquatable<TUserKey>

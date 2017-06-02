@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace Microsoft.AspNetCore.Identity.Service.Mvc
 {
-    public static class IdentityServiceControllerExtensions
+    public static class IdentityApplicationControllerExtensions
     {
         public static IActionResult FormPost(this ControllerBase controller, AuthorizationRequestError error)
         {

@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
                 },
                 new RequestGrants()
                 {
-                    Claims = new List<Claim> { new Claim(IdentityServiceClaimTypes.Nonce, "invalid-nonce") }
+                    Claims = new List<Claim> { new Claim(TokenClaimTypes.Nonce, "invalid-nonce") }
                 });
 
             var claimsProvider = new NonceTokenClaimsProvider();
@@ -42,7 +42,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
             var claims = context.CurrentClaims;
 
             // Assert
-            Assert.Single(claims, c => c.Type.Equals(IdentityServiceClaimTypes.Nonce) && c.Value.Equals("nonce-value"));
+            Assert.Single(claims, c => c.Type.Equals(TokenClaimTypes.Nonce) && c.Value.Equals("nonce-value"));
         }
 
         [Theory]
@@ -64,7 +64,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
                     // Makes sure we don't add the nonce in an authorization request
                     // even if for some reason ends up in the claims grant (which is not
                     // used in authentication).
-                    Claims = new List<Claim> { new Claim(IdentityServiceClaimTypes.Nonce, "nonce-value") }
+                    Claims = new List<Claim> { new Claim(TokenClaimTypes.Nonce, "nonce-value") }
                 });
 
             var claimsProvider = new NonceTokenClaimsProvider();
@@ -76,7 +76,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
             var claims = context.CurrentClaims;
 
             // Assert
-            Assert.DoesNotContain(claims, c => c.Type.Equals(IdentityServiceClaimTypes.Nonce));
+            Assert.DoesNotContain(claims, c => c.Type.Equals(TokenClaimTypes.Nonce));
         }
 
         [Theory]
@@ -98,7 +98,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
                 },
                 new RequestGrants()
                 {
-                    Claims = new List<Claim> { new Claim(IdentityServiceClaimTypes.Nonce, "nonce-value") }
+                    Claims = new List<Claim> { new Claim(TokenClaimTypes.Nonce, "nonce-value") }
                 });
 
             var claimsProvider = new NonceTokenClaimsProvider();
@@ -110,7 +110,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
             var claims = context.CurrentClaims;
 
             // Assert
-            Assert.Single(claims, c => c.Type.Equals(IdentityServiceClaimTypes.Nonce) && c.Value.Equals("nonce-value"));
+            Assert.Single(claims, c => c.Type.Equals(TokenClaimTypes.Nonce) && c.Value.Equals("nonce-value"));
         }
 
         [Theory]
@@ -141,7 +141,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
             var claims = context.CurrentClaims;
 
             // Assert
-            Assert.DoesNotContain(claims, c => c.Type.Equals(IdentityServiceClaimTypes.Nonce));
+            Assert.DoesNotContain(claims, c => c.Type.Equals(TokenClaimTypes.Nonce));
         }
     }
 }

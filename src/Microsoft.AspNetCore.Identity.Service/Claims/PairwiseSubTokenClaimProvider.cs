@@ -27,14 +27,14 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                context.CurrentToken.Equals(TokenTypes.AccessToken))
             {
                 var userId = context.User.FindFirstValue(_options.ClaimsIdentity.UserIdClaimType);
-                var applicationId = context.Application.FindFirstValue(IdentityServiceClaimTypes.ObjectId);
+                var applicationId = context.Application.FindFirstValue(TokenClaimTypes.ObjectId);
                 var unHashedSubjectBits = Encoding.ASCII.GetBytes($"{userId}/{applicationId}");
                 var hashing = CryptographyHelpers.CreateSHA256();
                 var subject = Base64UrlEncoder.Encode(hashing.ComputeHash(unHashedSubjectBits));
                 Claim existingClaim = null;
                 foreach (var claim in context.CurrentClaims)
                 {
-                    if (claim.Type.Equals(IdentityServiceClaimTypes.Subject,StringComparison.Ordinal))
+                    if (claim.Type.Equals(TokenClaimTypes.Subject,StringComparison.Ordinal))
                     {
                         existingClaim = claim;
                     }
@@ -45,7 +45,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                     context.CurrentClaims.Remove(existingClaim);
                 }
 
-                context.CurrentClaims.Add(new Claim(IdentityServiceClaimTypes.Subject, subject));
+                context.CurrentClaims.Add(new Claim(TokenClaimTypes.Subject, subject));
             }
 
             return Task.CompletedTask;

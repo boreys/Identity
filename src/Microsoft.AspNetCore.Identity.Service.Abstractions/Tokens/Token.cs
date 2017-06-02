@@ -15,10 +15,10 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         protected Token(IEnumerable<Claim> claims)
         {
-            EnsureUniqueClaim(IdentityServiceClaimTypes.TokenUniqueId, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.IssuedAt, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.Expires, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.NotBefore, claims);
+            EnsureUniqueClaim(TokenClaimTypes.TokenUniqueId, claims);
+            EnsureUniqueClaim(TokenClaimTypes.IssuedAt, claims);
+            EnsureUniqueClaim(TokenClaimTypes.Expires, claims);
+            EnsureUniqueClaim(TokenClaimTypes.NotBefore, claims);
             _claims = new List<Claim>(claims);
         }
 
@@ -63,10 +63,10 @@ namespace Microsoft.AspNetCore.Identity.Service
         }
 
         public abstract string Kind { get; }
-        public virtual string Id => GetClaimValue(IdentityServiceClaimTypes.TokenUniqueId);
-        public virtual DateTimeOffset IssuedAt => GetClaimValueOrNull(IdentityServiceClaimTypes.IssuedAt, v => EpochTime.DateTime(long.Parse(v)));
-        public virtual DateTimeOffset Expires => GetClaimValueOrNull(IdentityServiceClaimTypes.Expires, v => EpochTime.DateTime(long.Parse(v)));
-        public virtual DateTimeOffset NotBefore => GetClaimValueOrNull(IdentityServiceClaimTypes.NotBefore, v => EpochTime.DateTime(long.Parse(v)));
+        public virtual string Id => GetClaimValue(TokenClaimTypes.TokenUniqueId);
+        public virtual DateTimeOffset IssuedAt => GetClaimValueOrNull(TokenClaimTypes.IssuedAt, v => EpochTime.DateTime(long.Parse(v)));
+        public virtual DateTimeOffset Expires => GetClaimValueOrNull(TokenClaimTypes.Expires, v => EpochTime.DateTime(long.Parse(v)));
+        public virtual DateTimeOffset NotBefore => GetClaimValueOrNull(TokenClaimTypes.NotBefore, v => EpochTime.DateTime(long.Parse(v)));
 
         public bool IsOfKind(string tokenType) => Kind.Equals(tokenType, StringComparison.Ordinal);
 

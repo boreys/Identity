@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using Microsoft.AspNetCore.Certificates.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,18 +9,18 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.AspNetCore.Identity.Service.Core
 {
-    public class IdentityServiceOptionsConfigurationDefaultSetup : ConfigureDefaultOptions<IdentityServiceOptions>
+    public class IdentityTokensOptionsConfigurationDefaultSetup : ConfigureDefaultOptions<TokenOptions>
     {
         public const string SectionKey = "Microsoft:AspNetCore:Identity:Service";
 
-        public IdentityServiceOptionsConfigurationDefaultSetup(
+        public IdentityTokensOptionsConfigurationDefaultSetup(
             IConfiguration configuration, ILoggerFactory loggerFactory)
             : base(options => ConfigureOptions(options, configuration, loggerFactory))
         {
         }
 
         private static void ConfigureOptions(
-            IdentityServiceOptions options,
+            TokenOptions options,
             IConfiguration configuration,
             ILoggerFactory loggerFactory)
         {

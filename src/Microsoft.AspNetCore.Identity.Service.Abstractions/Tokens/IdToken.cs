@@ -15,21 +15,21 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         private static IEnumerable<Claim> ValidateClaims(IEnumerable<Claim> claims)
         {
-            EnsureUniqueClaim(IdentityServiceClaimTypes.Issuer, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.Subject, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.Audience, claims);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.Nonce, claims, required: false);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.CodeHash, claims, required: false);
-            EnsureUniqueClaim(IdentityServiceClaimTypes.AccessTokenHash, claims, required: false);
+            EnsureUniqueClaim(TokenClaimTypes.Issuer, claims);
+            EnsureUniqueClaim(TokenClaimTypes.Subject, claims);
+            EnsureUniqueClaim(TokenClaimTypes.Audience, claims);
+            EnsureUniqueClaim(TokenClaimTypes.Nonce, claims, required: false);
+            EnsureUniqueClaim(TokenClaimTypes.CodeHash, claims, required: false);
+            EnsureUniqueClaim(TokenClaimTypes.AccessTokenHash, claims, required: false);
             return claims;
         }
 
         public override string Kind => TokenTypes.IdToken;
-        public string Issuer => GetClaimValue(IdentityServiceClaimTypes.Issuer);
-        public string Subject => GetClaimValue(IdentityServiceClaimTypes.Subject);
-        public string Audience => GetClaimValue(IdentityServiceClaimTypes.Audience);
-        public string Nonce => GetClaimValue(IdentityServiceClaimTypes.Nonce);
-        public string CodeHash => GetClaimValue(IdentityServiceClaimTypes.CodeHash);
-        public string AccessTokenHash => GetClaimValue(IdentityServiceClaimTypes.AccessTokenHash);
+        public string Issuer => GetClaimValue(TokenClaimTypes.Issuer);
+        public string Subject => GetClaimValue(TokenClaimTypes.Subject);
+        public string Audience => GetClaimValue(TokenClaimTypes.Audience);
+        public string Nonce => GetClaimValue(TokenClaimTypes.Nonce);
+        public string CodeHash => GetClaimValue(TokenClaimTypes.CodeHash);
+        public string AccessTokenHash => GetClaimValue(TokenClaimTypes.AccessTokenHash);
     }
 }

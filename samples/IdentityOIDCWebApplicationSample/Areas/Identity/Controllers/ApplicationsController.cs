@@ -11,16 +11,16 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace IdentityOIDCWebApplicationSample.Identity.Controllers
 {
-    [Authorize(IdentityServiceOptions.ManagementPolicyName)]
+    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.ManagementPolicyName)]
     [Area("Identity")]
     public class ApplicationsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationManager<IdentityServiceApplication> _applicationManager;
+        private readonly ApplicationManager<IdentityClientApplication> _applicationManager;
 
         public ApplicationsController(
             UserManager<ApplicationUser> userManager,
-            ApplicationManager<IdentityServiceApplication> applicationManager)
+            ApplicationManager<IdentityClientApplication> applicationManager)
         {
             _userManager = userManager;
             _applicationManager = applicationManager;
@@ -43,7 +43,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
         [HttpPost("tfp/Identity/signinsignup/Applications/Create")]
         public async Task<IActionResult> Create(CreateApplicationViewModel model)
         {
-            var application = new IdentityServiceApplication
+            var application = new IdentityClientApplication
             {
                 Name = model.Name,
                 ClientId = Guid.NewGuid().ToString()

@@ -7,25 +7,25 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Identity.Service.Configuration
 {
-    public class IdentityServiceOptionsSetup : IConfigureOptions<IdentityServiceOptions>
+    public class TokenOptionsSetup : IConfigureOptions<TokenOptions>
     {
         private readonly IOptions<IdentityOptions> _options;
 
-        public IdentityServiceOptionsSetup(IOptions<IdentityOptions> options)
+        public TokenOptionsSetup(IOptions<IdentityOptions> options)
         {
             _options = options;
         }
 
-        public void Configure(IdentityServiceOptions options)
+        public void Configure(TokenOptions options)
         {
             options.IdTokenOptions.UserClaims
-                .AddSingle(IdentityServiceClaimTypes.Subject, _options.Value.ClaimsIdentity.UserIdClaimType);
+                .AddSingle(TokenClaimTypes.Subject, _options.Value.ClaimsIdentity.UserIdClaimType);
 
             options.IdTokenOptions.UserClaims
-                .AddSingle(IdentityServiceClaimTypes.Name, _options.Value.ClaimsIdentity.UserNameClaimType);
+                .AddSingle(TokenClaimTypes.Name, _options.Value.ClaimsIdentity.UserNameClaimType);
 
             options.AccessTokenOptions.UserClaims
-                .AddSingle(IdentityServiceClaimTypes.Name, _options.Value.ClaimsIdentity.UserNameClaimType);
+                .AddSingle(TokenClaimTypes.Name, _options.Value.ClaimsIdentity.UserNameClaimType);
 
             options.LoginPolicy = new AuthorizationPolicyBuilder(options.LoginPolicy)
                 .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Configuration
 
             options.ManagementPolicy = new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
-                .AddAuthenticationSchemes(IdentityServiceOptions.CookieAuthenticationScheme)
+                .AddAuthenticationSchemes(TokenOptions.CookieAuthenticationScheme)
                 .AddRequirements(new ApplicationManagementRequirement())
                 .Build();
         }

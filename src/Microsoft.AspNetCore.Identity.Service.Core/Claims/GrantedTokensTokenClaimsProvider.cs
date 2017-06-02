@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
             {
                 foreach (var grantedToken in GetGrantedTokensForAuthorizationCode(context))
                 {
-                    context.AddClaimToCurrentToken(IdentityServiceClaimTypes.GrantedToken, grantedToken);
+                    context.AddClaimToCurrentToken(TokenClaimTypes.GrantedToken, grantedToken);
                 }
             }
 
@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
             {
                 foreach (var grantedToken in context.RequestGrants.Tokens)
                 {
-                    context.AddClaimToCurrentToken(IdentityServiceClaimTypes.GrantedToken, grantedToken);
+                    context.AddClaimToCurrentToken(TokenClaimTypes.GrantedToken, grantedToken);
                 }
             }
 

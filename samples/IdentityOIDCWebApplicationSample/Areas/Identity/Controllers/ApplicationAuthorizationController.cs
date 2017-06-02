@@ -13,16 +13,16 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
     [Area("Identity")]
     public class ApplicationAuthorizationController : Controller
     {
-        private readonly IOptions<IdentityServiceOptions> _options;
+        private readonly IOptions<TokenOptions> _options;
         private readonly ITokenManager _tokenManager;
-        private readonly SessionManager<ApplicationUser, IdentityServiceApplication> _sessionManager;
+        private readonly SessionManager<ApplicationUser, IdentityClientApplication> _sessionManager;
         private readonly IAuthorizationResponseFactory _authorizationResponseFactory;
         private readonly ITokenResponseFactory _tokenResponseFactory;
 
         public ApplicationAuthorizationController(
-            IOptions<IdentityServiceOptions> options,
+            IOptions<TokenOptions> options,
             ITokenManager tokenManager,
-            SessionManager<ApplicationUser, IdentityServiceApplication> sessionManager,
+            SessionManager<ApplicationUser, IdentityClientApplication> sessionManager,
             IAuthorizationResponseFactory authorizationResponseFactory,
             ITokenResponseFactory tokenResponseFactory)
         {

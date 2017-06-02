@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Identity.Service
 {
     public abstract class SessionManager
     {
-        private readonly IOptions<IdentityServiceOptions> _options;
+        private readonly IOptions<TokenOptions> _options;
         private readonly IOptions<IdentityOptions> _identityOptions;
         private readonly CookieAuthenticationOptions _sessionCookieOptions;
         private readonly ITimeStampManager _timeStampManager;
@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         private HttpContext _context;
 
         public SessionManager(
-            IOptions<IdentityServiceOptions> options,
+            IOptions<TokenOptions> options,
             IOptions<IdentityOptions> identityOptions,
             IOptionsSnapshot<CookieAuthenticationOptions> cookieOptions,
             ITimeStampManager timeStampManager,
@@ -42,7 +42,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             _timeStampManager = timeStampManager;
             _contextAccessor = contextAccessor;
             _errorProvider = errorProvider;
-            _sessionCookieOptions = cookieOptions.Get(IdentityServiceOptions.CookieAuthenticationScheme);
+            _sessionCookieOptions = cookieOptions.Get(TokenOptions.CookieAuthenticationScheme);
         }
 
         public HttpContext Context
@@ -113,10 +113,10 @@ namespace Microsoft.AspNetCore.Identity.Service
                 var sessions = newPrincipal.Identities
                     .Where(i => !user.Identities.Select(l => l.AuthenticationType).Contains(i.AuthenticationType));
 
-                var scheme = IdentityServiceOptions.CookieAuthenticationScheme;
+                var scheme = TokenOptions.CookieAuthenticationScheme;
                 string userIdClaimType = _identityOptions.Value.ClaimsIdentity.UserIdClaimType;
                 var userId = user.FindFirstValue(userIdClaimType);
-                var clientId = application.FindFirstValue(IdentityServiceClaimTypes.ClientId);
+                var clientId = application.FindFirstValue(TokenClaimTypes.ClientId);
 
                 var filteredIdentities = newPrincipal.Identities
                     .Where(i => scheme.Equals(i.AuthenticationType, StringComparison.Ordinal) &&
@@ -131,8 +131,8 @@ namespace Microsoft.AspNetCore.Identity.Service
             {
                 var principal = new ClaimsPrincipal();
                 var userId = user.FindFirstValue(_identityOptions.Value.ClaimsIdentity.UserIdClaimType);
-                var clientId = application.FindFirstValue(IdentityServiceClaimTypes.ClientId);
-                var logoutUris = application.FindAll(IdentityServiceClaimTypes.LogoutRedirectUri);
+                var clientId = application.FindFirstValue(TokenClaimTypes.ClientId);
+                var logoutUris = application.FindAll(TokenClaimTypes.LogoutRedirectUri);
 
                 var duration = _sessionCookieOptions.ExpireTimeSpan;
                 var expiration = _timeStampManager.GetTimeStampInEpochTime(duration);
@@ -140,11 +140,11 @@ namespace Microsoft.AspNetCore.Identity.Service
                 var identity = new ClaimsIdentity(
                     new List<Claim>(logoutUris)
                     {
-                        new Claim(IdentityServiceClaimTypes.UserId,userId),
-                        new Claim(IdentityServiceClaimTypes.ClientId,clientId),
-                        new Claim(IdentityServiceClaimTypes.Expires,expiration)
+                        new Claim(TokenClaimTypes.UserId,userId),
+                        new Claim(TokenClaimTypes.ClientId,clientId),
+                        new Claim(TokenClaimTypes.Expires,expiration)
                     },
-                    IdentityServiceOptions.CookieAuthenticationScheme);
+                    TokenOptions.CookieAuthenticationScheme);
 
                 principal.AddIdentity(identity);
 
@@ -183,7 +183,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         {
             var userIdClaimType = _identityOptions.Value.ClaimsIdentity.UserIdClaimType;
             return identity.Claims.SingleOrDefault(c => ClaimMatches(c, userIdClaimType, userId)) != null &&
-                identity.Claims.SingleOrDefault(c => ClaimMatches(c, IdentityServiceClaimTypes.ClientId, clientId)) != null;
+                identity.Claims.SingleOrDefault(c => ClaimMatches(c, TokenClaimTypes.ClientId, clientId)) != null;
 
             bool ClaimMatches(Claim claim, string type, string value) =>
                 claim.Type.Equals(type, StringComparison.Ordinal) && claim.Value.Equals(value, StringComparison.Ordinal);
@@ -212,7 +212,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         private readonly IApplicationClaimsPrincipalFactory<TApplication> _applicationPrincipalFactory;
 
         public SessionManager(
-            IOptions<IdentityServiceOptions> options,
+            IOptions<TokenOptions> options,
             IOptions<IdentityOptions> identityOptions,
             IOptionsSnapshot<CookieAuthenticationOptions> cookieOptions,
             ITimeStampManager timeStampManager,

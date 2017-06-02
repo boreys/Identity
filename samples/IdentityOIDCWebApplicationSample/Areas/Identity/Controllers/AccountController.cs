@@ -16,8 +16,8 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
 {
     [Area("Identity")]
     [Route("tfp/Identity/signinsignup/[controller]/[action]")]
-    [Authorize(IdentityServiceOptions.LoginPolicyName)]
-    [Authorize(IdentityServiceOptions.SessionPolicyName)]
+    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.LoginPolicyName)]
+    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.SessionPolicyName)]
     [AllowAnonymous]
     public class AccountController : Controller
     {

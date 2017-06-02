@@ -193,7 +193,7 @@ namespace Microsoft.AspNetCore
                 .ConfigureServices(services =>
                 {
                     services.AddTransient<IConfigureOptions<KestrelServerOptions>, KestrelServerOptionsSetup>();
-                    services.AddTransient<IConfigureOptions<IdentityServiceOptions>, ConfigureDefaults<IdentityServiceOptions>>();
+                    services.AddTransient<IConfigureOptions<TokenOptions>, ConfigureDefaults<TokenOptions>>();
                     services.AddTransient<IConfigureOptions<OpenIdConnectOptions>, ConfigureDefaults<OpenIdConnectOptions>>();
                     services.AddTransient<IConfigureOptions<IntegratedWebClientOptions>, ConfigureDefaults<IntegratedWebClientOptions>>();
                     services.ConfigureAspNetCoreDefaults();

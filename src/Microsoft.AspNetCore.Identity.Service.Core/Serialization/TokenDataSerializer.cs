@@ -12,12 +12,12 @@ namespace Microsoft.AspNetCore.Identity.Service.Serialization
     public class TokenDataSerializer<TToken> : IDataSerializer<TToken>
         where TToken : Token
     {
-        private readonly IdentityServiceOptions _options;
+        private readonly TokenOptions _options;
         private readonly JsonSerializer _serializer;
         private readonly IArrayPool<char> _pool;
 
         public TokenDataSerializer(
-            IOptions<IdentityServiceOptions> options,
+            IOptions<TokenOptions> options,
             ArrayPool<char> arrayPool)
         {
             _options = options.Value;

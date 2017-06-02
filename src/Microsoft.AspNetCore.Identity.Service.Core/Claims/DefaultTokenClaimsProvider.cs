@@ -12,9 +12,9 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
 {
     public class DefaultTokenClaimsProvider : ITokenClaimsProvider
     {
-        private readonly IOptions<IdentityServiceOptions> _options;
+        private readonly IOptions<TokenOptions> _options;
 
-        public DefaultTokenClaimsProvider(IOptions<IdentityServiceOptions> options)
+        public DefaultTokenClaimsProvider(IOptions<TokenOptions> options)
         {
             _options = options;
         }
@@ -23,7 +23,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
 
         public Task OnGeneratingClaims(TokenGeneratingContext context)
         {
-            context.AddClaimToCurrentToken(IdentityServiceClaimTypes.TokenUniqueId, Guid.NewGuid().ToString());
+            context.AddClaimToCurrentToken(TokenClaimTypes.TokenUniqueId, Guid.NewGuid().ToString());
 
             var userMapping = GetUserPrincipalTokenMapping(context.CurrentToken);
             var applicationMapping = GetApplicationPrincipalTokenMapping(context.CurrentToken);
@@ -35,12 +35,12 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
 
             if (context.IsContextForTokenTypes(TokenTypes.AccessToken, TokenTypes.IdToken))
             {
-                context.AddClaimToCurrentToken(IdentityServiceClaimTypes.Issuer, _options.Value.Issuer);
+                context.AddClaimToCurrentToken(TokenClaimTypes.Issuer, _options.Value.Issuer);
             }
 
             if (context.IsContextForTokenTypes(TokenTypes.AuthorizationCode) && context.RequestParameters.RedirectUri != null)
             {
-                context.AddClaimToCurrentToken(IdentityServiceClaimTypes.RedirectUri, context.RequestParameters.RedirectUri);
+                context.AddClaimToCurrentToken(TokenClaimTypes.RedirectUri, context.RequestParameters.RedirectUri);
             }
 
             return Task.CompletedTask;

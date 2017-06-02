@@ -7,16 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 {
-    public abstract class IdentityServiceDbContext<TUser,TApplication> : 
-        IdentityServiceDbContext<TUser,IdentityRole,string,TApplication,string>
+    public abstract class IdentityClientApplicationsDbContext<TUser, TApplication> :
+        IdentityClientApplicationsDbContext<TUser, IdentityRole, string, TApplication, string>
         where TUser : IdentityUser
-        where TApplication : IdentityServiceApplication
+        where TApplication : IdentityClientApplication
     {
-        public IdentityServiceDbContext(DbContextOptions options) : base(options) { }
+        public IdentityClientApplicationsDbContext(DbContextOptions options) : base(options) { }
     }
 
-    public abstract class IdentityServiceDbContext<TUser,TRole,TUserKey,TApplication,TApplicationKey>
-        : IdentityServiceDbContext<
+    public abstract class IdentityClientApplicationsDbContext<TUser, TRole, TUserKey, TApplication, TApplicationKey>
+        : IdentityClientApplicationsDbContext<
             TUser,
             TRole,
             TUserKey,
@@ -26,20 +26,20 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             IdentityRoleClaim<TUserKey>,
             IdentityUserToken<TUserKey>,
             TApplication,
-            IdentityServiceScope<TApplicationKey>,
-            IdentityServiceApplicationClaim<TApplicationKey>,
-            IdentityServiceRedirectUri<TApplicationKey>,
+            IdentityClientApplicationScope<TApplicationKey>,
+            IdentityClientApplicationClaim<TApplicationKey>,
+            IdentityClientApplicationRedirectUri<TApplicationKey>,
             TApplicationKey>
         where TUser : IdentityUser<TUserKey>
         where TRole : IdentityRole<TUserKey>
         where TUserKey : IEquatable<TUserKey>
-        where TApplication : IdentityServiceApplication<TApplicationKey,TUserKey>
+        where TApplication : IdentityClientApplication<TApplicationKey, TUserKey>
         where TApplicationKey : IEquatable<TApplicationKey>
     {
-        public IdentityServiceDbContext(DbContextOptions options) : base(options) { }
+        public IdentityClientApplicationsDbContext(DbContextOptions options) : base(options) { }
     }
 
-    public abstract class IdentityServiceDbContext<
+    public abstract class IdentityClientApplicationsDbContext<
         TUser,
         TRole,
         TUserKey,
@@ -62,13 +62,13 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
         where TUserLogin : IdentityUserLogin<TUserKey>
         where TRoleClaim : IdentityRoleClaim<TUserKey>
         where TUserToken : IdentityUserToken<TUserKey>
-        where TApplication : IdentityServiceApplication<TApplicationKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
-        where TScope : IdentityServiceScope<TApplicationKey>
-        where TApplicationClaim : IdentityServiceApplicationClaim<TApplicationKey>
-        where TRedirectUri : IdentityServiceRedirectUri<TApplicationKey>
+        where TApplication : IdentityClientApplication<TApplicationKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
+        where TScope : IdentityClientApplicationScope<TApplicationKey>
+        where TApplicationClaim : IdentityClientApplicationClaim<TApplicationKey>
+        where TRedirectUri : IdentityClientApplicationRedirectUri<TApplicationKey>
         where TApplicationKey : IEquatable<TApplicationKey>
     {
-        public IdentityServiceDbContext(DbContextOptions options)
+        public IdentityClientApplicationsDbContext(DbContextOptions options)
             : base(options)
         { }
 

@@ -3,7 +3,7 @@
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityServiceClaimTypes
+    public class TokenClaimTypes
     {
         public const string TokenUniqueId = "tuid";
         public const string ObjectId = "oid";

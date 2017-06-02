@@ -11,11 +11,11 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
     public class TimestampsTokenClaimsProvider : ITokenClaimsProvider
     {
         private readonly ITimeStampManager _timeStampManager;
-        private readonly IOptions<IdentityServiceOptions> _options;
+        private readonly IOptions<TokenOptions> _options;
 
         public TimestampsTokenClaimsProvider(
             ITimeStampManager timestampManager,
-            IOptions<IdentityServiceOptions> options)
+            IOptions<TokenOptions> options)
         {
             _timeStampManager = timestampManager;
             _options = options;
@@ -27,21 +27,21 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
         {
             var options = GetOptions(context.CurrentToken);
             context.CurrentClaims.Add(new Claim(
-                IdentityServiceClaimTypes.NotBefore, 
+                TokenClaimTypes.NotBefore, 
                 _timeStampManager.GetTimeStampInEpochTime(options.NotValidBefore)));
 
             context.CurrentClaims.Add(new Claim(
-                IdentityServiceClaimTypes.IssuedAt,
+                TokenClaimTypes.IssuedAt,
                 _timeStampManager.GetCurrentTimeStampInEpochTime()));
 
             context.CurrentClaims.Add(new Claim(
-                IdentityServiceClaimTypes.Expires,
+                TokenClaimTypes.Expires,
                 _timeStampManager.GetTimeStampInEpochTime(options.NotValidAfter)));
 
             return Task.CompletedTask;
         }
 
-        private TokenOptions GetOptions(string tokenType)
+        private TokenClaimsOptions GetOptions(string tokenType)
         {
             switch (tokenType)
             {

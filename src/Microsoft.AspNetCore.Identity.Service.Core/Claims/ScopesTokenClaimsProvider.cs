@@ -28,12 +28,12 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
             if (context.IsContextForTokenTypes(TokenTypes.AuthorizationCode))
             {
                 context.AddClaimToCurrentToken(
-                    IdentityServiceClaimTypes.Scope,
+                    TokenClaimTypes.Scope,
                     GetScopeValue(context.RequestGrants.Scopes, excludeCanonical: false));
 
                 if (resource != null)
                 {
-                    context.AddClaimToCurrentToken(IdentityServiceClaimTypes.Resource, resource);
+                    context.AddClaimToCurrentToken(TokenClaimTypes.Resource, resource);
                 }
 
                 return Task.CompletedTask;
@@ -47,12 +47,12 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                 var scopeClaim = context
                     .RequestGrants
                     .Claims
-                    .Single(c => c.Type.Equals(IdentityServiceClaimTypes.Scope, StringComparison.Ordinal));
+                    .Single(c => c.Type.Equals(TokenClaimTypes.Scope, StringComparison.Ordinal));
 
                 var resourceClaim = context
                     .RequestGrants
                     .Claims
-                    .SingleOrDefault(c => c.Type.Equals(IdentityServiceClaimTypes.Resource, StringComparison.Ordinal));
+                    .SingleOrDefault(c => c.Type.Equals(TokenClaimTypes.Resource, StringComparison.Ordinal));
 
                 context.AddClaimToCurrentToken(scopeClaim);
 
@@ -70,9 +70,9 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
             var scopes = context.RequestGrants.Scopes;
             var accessTokenScopes = GetAccessTokenScopes(scopes);
 
-            context.AddClaimToCurrentToken(IdentityServiceClaimTypes.Scope, GetScopeValue(scopes, excludeCanonical: true));
-            context.AddClaimToCurrentToken(IdentityServiceClaimTypes.Audience, resource);
-            context.AddClaimToCurrentToken(IdentityServiceClaimTypes.AuthorizedParty, context.RequestParameters.ClientId);
+            context.AddClaimToCurrentToken(TokenClaimTypes.Scope, GetScopeValue(scopes, excludeCanonical: true));
+            context.AddClaimToCurrentToken(TokenClaimTypes.Audience, resource);
+            context.AddClaimToCurrentToken(TokenClaimTypes.AuthorizedParty, context.RequestParameters.ClientId);
         }
 
         private IEnumerable<ApplicationScope> GetAccessTokenScopes(IEnumerable<ApplicationScope> applicationScopes) =>

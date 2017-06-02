@@ -5,21 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Identity.Service.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public static class IdentityServiceBuilderExtensions
+    public static class IdentityTokenBuilderExtensions
     {
-        public static IIdentityServiceBuilder AddSigningCertificate(
-            this IIdentityServiceBuilder builder,
+        public static IIdentityClientApplicationsBuilder AddSigningCertificate(
+            this IIdentityClientApplicationsBuilder builder,
             X509Certificate2 certificate)
         {
             CryptographyHelpers.ValidateRsaKeyLength(certificate);
             var key = new X509SecurityKey(certificate);
-            builder.Services.Configure<IdentityServiceOptions>(
+            builder.Services.Configure<TokenOptions>(
                 options =>
                 {
                     var algorithm = CryptographyHelpers.FindAlgorithm(certificate);
@@ -29,8 +28,8 @@ namespace Microsoft.AspNetCore.Identity.Service
             return builder;
         }
 
-        public static IIdentityServiceBuilder AddSigningCertificates(
-            this IIdentityServiceBuilder builder,
+        public static IIdentityClientApplicationsBuilder AddSigningCertificates(
+            this IIdentityClientApplicationsBuilder builder,
             IEnumerable<X509Certificate2> certificates)
         {
             foreach (var certificate in certificates)
@@ -41,11 +40,11 @@ namespace Microsoft.AspNetCore.Identity.Service
             return builder;
         }
 
-        public static IIdentityServiceBuilder AddSigningCertificates(
-            this IIdentityServiceBuilder builder,
+        public static IIdentityClientApplicationsBuilder AddSigningCertificates(
+            this IIdentityClientApplicationsBuilder builder,
             Func<IEnumerable<X509Certificate2>> certificatesLoader)
         {
-            builder.Services.Configure<IdentityServiceOptions>(o =>
+            builder.Services.Configure<TokenOptions>(o =>
             {
                 var certificates = certificatesLoader();
                 foreach (var certificate in certificates)
@@ -58,7 +57,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             return builder;
         }
 
-        public static IIdentityServiceBuilder DisableDeveloperCertificate(this IIdentityServiceBuilder builder)
+        public static IIdentityClientApplicationsBuilder DisableDeveloperCertificate(this IIdentityClientApplicationsBuilder builder)
         {
             var services = builder.Services;
             foreach (var service in services.ToList())
@@ -72,7 +71,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             return builder;
         }
 
-        public static IIdentityServiceBuilder AddSigningCertificate(this IIdentityServiceBuilder builder, Func<X509Certificate2> func)
+        public static IIdentityClientApplicationsBuilder AddSigningCertificate(this IIdentityClientApplicationsBuilder builder, Func<X509Certificate2> func)
         {
             var cert = func();
             if (cert == null)

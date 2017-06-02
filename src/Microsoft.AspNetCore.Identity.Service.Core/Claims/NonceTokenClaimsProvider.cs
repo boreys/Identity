@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                 TokenTypes.AccessToken,
                 TokenTypes.AuthorizationCode) && nonce != null)
             {
-                context.AddClaimToCurrentToken(IdentityServiceClaimTypes.Nonce, nonce);
+                context.AddClaimToCurrentToken(TokenClaimTypes.Nonce, nonce);
             }
 
             return Task.CompletedTask;
@@ -28,6 +28,6 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
         private string GetNonce(TokenGeneratingContext context) =>
             context.RequestParameters.RequestType == OpenIdConnectRequestType.Authentication ?
                 context.RequestParameters.Nonce :
-                context.RequestGrants.Claims.SingleOrDefault(c => c.Type.Equals(IdentityServiceClaimTypes.Nonce))?.Value;
+                context.RequestGrants.Claims.SingleOrDefault(c => c.Type.Equals(TokenClaimTypes.Nonce))?.Value;
     }
 }

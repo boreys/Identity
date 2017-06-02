@@ -22,18 +22,18 @@ namespace Microsoft.AspNetCore.Diagnostics.Identity.Service
         private readonly IHostingEnvironment _environment;
         private readonly IOptions<DeveloperCertificateOptions> _options;
         private readonly ITimeStampManager _timeStampManager;
-        private readonly IOptionsCache<IdentityServiceOptions> _identityServiceOptionsCache;
+        private readonly IOptionsCache<TokenOptions> _tokenOptionsCache;
 
         public DeveloperCertificateMiddleware(
             RequestDelegate next,
             IOptions<DeveloperCertificateOptions> options,
-            IOptionsCache<IdentityServiceOptions> identityServiceOptions,
+            IOptionsCache<TokenOptions> tokenOptions,
             ITimeStampManager timeStampManager,
             IHostingEnvironment environment)
         {
             _next = next;
             _options = options;
-            _identityServiceOptionsCache = identityServiceOptions;
+            _tokenOptionsCache = tokenOptions;
             _environment = environment;
             _timeStampManager = timeStampManager;
         }
@@ -85,14 +85,14 @@ namespace Microsoft.AspNetCore.Diagnostics.Identity.Service
                 using (var rsa = RSA.Create(2048))
                 {
                     var signingRequest = new CertificateRequest(
-                        new X500DistinguishedName("CN=IdentityService.Development"), rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                        new X500DistinguishedName("CN=Identity.Development"), rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                     var enhacedKeyUsage = new OidCollection();
                     enhacedKeyUsage.Add(new Oid("1.3.6.1.5.5.7.3.1", "Server Authentication"));
                     signingRequest.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(enhacedKeyUsage, critical: true));
                     signingRequest.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature, critical: true));
 
                     var certificate = signingRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(1));
-                    certificate.FriendlyName = "Identity Service developer certificate";
+                    certificate.FriendlyName = "Identity developer certificate";
 
                     // We need to take this step so that the key gets persisted.
                     var export = certificate.Export(X509ContentType.Pkcs12, "");
@@ -122,7 +122,7 @@ namespace Microsoft.AspNetCore.Diagnostics.Identity.Service
                     store.Open(OpenFlags.ReadOnly);
                     var developmentCertificate = store.Certificates.Find(
                         X509FindType.FindBySubjectName,
-                        "IdentityService.Development",
+                        "Identity.Development",
                         validOnly: false);
 
                     store.Close();
@@ -136,7 +136,7 @@ namespace Microsoft.AspNetCore.Diagnostics.Identity.Service
                 return certificates.Any(
                     c => _timeStampManager.IsValidPeriod(c.NotBefore, c.Expires) &&
                         c.Credentials.Key is X509SecurityKey key &&
-                        key.Certificate.Subject.Equals("CN=IdentityService.Development"));
+                        key.Certificate.Subject.Equals("CN=Identity.Development"));
             }
         }
     }

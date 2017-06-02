@@ -3,7 +3,7 @@
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityServiceScope<TApplicationKey>
+    public class IdentityClientApplicationScope<TApplicationKey>
     {
         public string Id { get; set; }
         public TApplicationKey ApplicationId { get; set; }

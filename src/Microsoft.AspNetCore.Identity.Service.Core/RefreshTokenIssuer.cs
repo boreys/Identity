@@ -12,24 +12,24 @@ namespace Microsoft.AspNetCore.Identity.Service
     {
         private static readonly string[] ClaimsToFilter = new string[]
         {
-            IdentityServiceClaimTypes.ObjectId,
-            IdentityServiceClaimTypes.Issuer,
-            IdentityServiceClaimTypes.Audience,
-            IdentityServiceClaimTypes.IssuedAt,
-            IdentityServiceClaimTypes.Expires,
-            IdentityServiceClaimTypes.NotBefore,
+            TokenClaimTypes.ObjectId,
+            TokenClaimTypes.Issuer,
+            TokenClaimTypes.Audience,
+            TokenClaimTypes.IssuedAt,
+            TokenClaimTypes.Expires,
+            TokenClaimTypes.NotBefore,
         };
 
         private static readonly string[] ClaimsToExclude = new string[]
         {
-            IdentityServiceClaimTypes.JwtId,
-            IdentityServiceClaimTypes.Issuer,
-            IdentityServiceClaimTypes.Subject,
-            IdentityServiceClaimTypes.Audience,
-            IdentityServiceClaimTypes.Scope,
-            IdentityServiceClaimTypes.IssuedAt,
-            IdentityServiceClaimTypes.Expires,
-            IdentityServiceClaimTypes.NotBefore,
+            TokenClaimTypes.JwtId,
+            TokenClaimTypes.Issuer,
+            TokenClaimTypes.Subject,
+            TokenClaimTypes.Audience,
+            TokenClaimTypes.Scope,
+            TokenClaimTypes.IssuedAt,
+            TokenClaimTypes.Expires,
+            TokenClaimTypes.NotBefore,
         };
 
         private readonly ISecureDataFormat<RefreshToken> _dataFormat;

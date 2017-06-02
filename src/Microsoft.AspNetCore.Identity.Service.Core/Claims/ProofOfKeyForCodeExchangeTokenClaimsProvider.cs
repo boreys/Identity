@@ -16,11 +16,11 @@ namespace Microsoft.AspNetCore.Identity.Service.Core.Claims
                 context.RequestParameters.Parameters.ContainsKey(ProofOfKeyForCodeExchangeParameterNames.CodeChallenge))
             {
                 context.AddClaimToCurrentToken(
-                    IdentityServiceClaimTypes.CodeChallenge,
+                    TokenClaimTypes.CodeChallenge,
                     context.RequestParameters.Parameters[ProofOfKeyForCodeExchangeParameterNames.CodeChallenge]);
 
                 context.AddClaimToCurrentToken(
-                    IdentityServiceClaimTypes.CodeChallengeMethod,
+                    TokenClaimTypes.CodeChallengeMethod,
                     context.RequestParameters.Parameters[ProofOfKeyForCodeExchangeParameterNames.CodeChallengeMethod]);
             }
 

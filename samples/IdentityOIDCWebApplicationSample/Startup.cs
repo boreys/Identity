@@ -32,14 +32,14 @@ namespace IdentityOIDCWebApplicationSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<IdentityServiceDbContext>(options =>
+            services.AddDbContext<IdentityApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             var builder = services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddApplications()
                 .DisableDeveloperCertificate()
-                .AddEntityFrameworkStores<IdentityServiceDbContext>()
+                .AddEntityFrameworkStores<IdentityApplicationDbContext>()
                 .AddClientExtensions();
 
             services.AddAuthentication(sharedOptions =>

@@ -30,14 +30,14 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                 if (accessToken != null)
                 {
                     context.CurrentClaims.Add(new Claim(
-                        IdentityServiceClaimTypes.AccessTokenHash,
+                        TokenClaimTypes.AccessTokenHash,
                         GetTokenHash(accessToken.SerializedValue)));
                 }
 
                 if (authorizationCode != null)
                 {
                     context.CurrentClaims.Add(new Claim(
-                        IdentityServiceClaimTypes.CodeHash,
+                        TokenClaimTypes.CodeHash,
                         GetTokenHash(authorizationCode.SerializedValue)));
                 }
             }

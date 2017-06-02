@@ -9,9 +9,9 @@ namespace Microsoft.AspNetCore.Identity.Service.Metadata
 {
     public class DefaultConfigurationMetadataProvider : IConfigurationMetadataProvider
     {
-        private readonly IOptions<IdentityServiceOptions> _options;
+        private readonly IOptions<TokenOptions> _options;
 
-        public DefaultConfigurationMetadataProvider(IOptions<IdentityServiceOptions> options)
+        public DefaultConfigurationMetadataProvider(IOptions<TokenOptions> options)
         {
             _options = options;
         }

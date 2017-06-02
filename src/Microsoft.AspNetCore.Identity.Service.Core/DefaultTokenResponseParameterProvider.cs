@@ -38,8 +38,8 @@ namespace Microsoft.AspNetCore.Identity.Service
             {
                 response.AccessToken = context.AccessToken.SerializedValue;
                 response.ExpiresIn = GetExpirationTime(context.AccessToken.Token);
-                response.Parameters["expires_on"] = context.AccessToken.Token.GetClaimValue(IdentityServiceClaimTypes.Expires);
-                response.Parameters["not_before"] = context.AccessToken.Token.GetClaimValue(IdentityServiceClaimTypes.NotBefore);
+                response.Parameters["expires_on"] = context.AccessToken.Token.GetClaimValue(TokenClaimTypes.Expires);
+                response.Parameters["not_before"] = context.AccessToken.Token.GetClaimValue(TokenClaimTypes.NotBefore);
                 response.Resource = context.RequestGrants.Scopes.First(s => s.ClientId != null).ClientId;
             }
 

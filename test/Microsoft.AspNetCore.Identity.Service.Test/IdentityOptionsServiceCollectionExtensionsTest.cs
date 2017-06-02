@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             var services = new ServiceCollection();
             services.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build());
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddApplications<IdentityServiceApplication>(o => { });
+                .AddApplications<IdentityClientApplication>(o => { });
 
             var provider = services.BuildServiceProvider();
 

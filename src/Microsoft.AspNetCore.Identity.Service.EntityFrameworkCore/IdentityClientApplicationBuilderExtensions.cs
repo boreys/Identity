@@ -8,11 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 {
-    public static class IdentityServiceBuilderExtensions
+    public static class IdentityClientApplicationBuilderExtensions
     {
-        public static IIdentityServiceBuilder AddApplications(
+        public static IIdentityClientApplicationsBuilder AddApplications(
             this IdentityBuilder builder,
-            Action<IdentityServiceOptions> configure)
+            Action<TokenOptions> configure)
         {
             if (builder == null)
             {
@@ -24,10 +24,10 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(configure));
             }
 
-            return builder.AddApplications<IdentityServiceApplication>(configure);
+            return builder.AddApplications<IdentityClientApplication>(configure);
         }
 
-        public static IIdentityServiceBuilder AddApplications(
+        public static IIdentityClientApplicationsBuilder AddApplications(
             this IdentityBuilder builder)
         {
             if (builder == null)
@@ -35,17 +35,17 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            return builder.AddApplications<IdentityServiceApplication>();
+            return builder.AddApplications<IdentityClientApplication>();
         }
 
-        public static IIdentityServiceBuilder AddEntityFrameworkStores<TContext>(this IIdentityServiceBuilder builder)
+        public static IIdentityClientApplicationsBuilder AddEntityFrameworkStores<TContext>(this IIdentityClientApplicationsBuilder builder)
             where TContext : DbContext
         {
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.RoleType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<TContext>();
 
             var services = builder.Services;
-            var applicationType = FindGenericBaseType(builder.ApplicationType, typeof(IdentityServiceApplication<,,,,>));
+            var applicationType = FindGenericBaseType(builder.ApplicationType, typeof(IdentityClientApplication<,,,,>));
             var userType = FindGenericBaseType(builder.UserType, typeof(IdentityUser<>));
 
             services.AddTransient(
