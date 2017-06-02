@@ -73,7 +73,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
             using (var db = CreateContext())
             {
                 var manager = CreateManager(db);
-                IdentityServiceResultAssert.IsSuccess(await manager.CreateAsync(application));
+                IdentityResultAssert.IsSuccess(await manager.CreateAsync(application));
             }
             using (var db = CreateContext())
             using (var db2 = CreateContext())
@@ -87,8 +87,8 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
                 Assert.NotSame(application1, application2);
                 application1.Name = Guid.NewGuid().ToString();
                 application2.Name = Guid.NewGuid().ToString();
-                IdentityServiceResultAssert.IsSuccess(await manager1.UpdateAsync(application1));
-                IdentityServiceResultAssert.IsFailure(await manager2.UpdateAsync(application2), ErrorDescriber.ConcurrencyFailure());
+                IdentityResultAssert.IsSuccess(await manager1.UpdateAsync(application1));
+                IdentityResultAssert.IsFailure(await manager2.UpdateAsync(application2), ErrorDescriber.ConcurrencyFailure());
             }
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
             using (var db = CreateContext())
             {
                 var manager = CreateManager(db);
-                IdentityServiceResultAssert.IsSuccess(await manager.CreateAsync(application));
+                IdentityResultAssert.IsSuccess(await manager.CreateAsync(application));
             }
             using (var db1 = CreateContext())
             using (var db2 = CreateContext())
@@ -114,8 +114,8 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
                 Assert.NotSame(application, application2);
                 application.Name= Guid.NewGuid().ToString();
                 application2.Name = Guid.NewGuid().ToString();
-                IdentityServiceResultAssert.IsSuccess(await manager1.UpdateAsync(application));
-                IdentityServiceResultAssert.IsFailure(await manager2.UpdateAsync(application2), ErrorDescriber.ConcurrencyFailure());
+                IdentityResultAssert.IsSuccess(await manager1.UpdateAsync(application));
+                IdentityResultAssert.IsFailure(await manager2.UpdateAsync(application2), ErrorDescriber.ConcurrencyFailure());
             }
         }
 
@@ -129,7 +129,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
             using (var db = CreateContext())
             {
                 var manager = CreateManager(db);
-                IdentityServiceResultAssert.IsSuccess(await manager.CreateAsync(application));
+                IdentityResultAssert.IsSuccess(await manager.CreateAsync(application));
             }
             using (var db = CreateContext())
             using (var db2 = CreateContext())
@@ -142,8 +142,8 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
                 Assert.NotNull(application2);
                 Assert.NotSame(application1, application2);
                 application1.Name = Guid.NewGuid().ToString();
-                IdentityServiceResultAssert.IsSuccess(await manager1.UpdateAsync(application1));
-                IdentityServiceResultAssert.IsFailure(await manager2.DeleteAsync(application2), ErrorDescriber.ConcurrencyFailure());
+                IdentityResultAssert.IsSuccess(await manager1.UpdateAsync(application1));
+                IdentityResultAssert.IsFailure(await manager2.DeleteAsync(application2), ErrorDescriber.ConcurrencyFailure());
             }
         }
     }

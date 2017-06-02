@@ -55,7 +55,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             return AutoSaveChanges ? Context.SaveChangesAsync(cancellationToken) : Task.CompletedTask;
         }
 
-        public async Task<IdentityServiceResult> CreateAsync(TApplication application, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(TApplication application, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -65,10 +65,10 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             }
             Context.Add(application);
             await SaveChanges(cancellationToken);
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
-        public async Task<IdentityServiceResult> UpdateAsync(TApplication application, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(TApplication application, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -86,12 +86,12 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             }
             catch (DbUpdateConcurrencyException)
             {
-                return IdentityServiceResult.Failed(ErrorDescriber.ConcurrencyFailure());
+                return IdentityResult.Failed(ErrorDescriber.ConcurrencyFailure());
             }
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
-        public async Task<IdentityServiceResult> DeleteAsync(TApplication application, CancellationToken cancellationToken)
+        public async Task<IdentityResult> DeleteAsync(TApplication application, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -107,9 +107,9 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             }
             catch (DbUpdateConcurrencyException)
             {
-                return IdentityServiceResult.Failed(ErrorDescriber.ConcurrencyFailure());
+                return IdentityResult.Failed(ErrorDescriber.ConcurrencyFailure());
             }
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
         public void Dispose()
@@ -216,7 +216,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             return redirectUris;
         }
 
-        public Task<IdentityServiceResult> RegisterRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
+        public Task<IdentityResult> RegisterRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -232,7 +232,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 
             RedirectUris.Add(CreateRedirectUri(app, redirectUri, isLogout: false));
 
-            return Task.FromResult(IdentityServiceResult.Success);
+            return Task.FromResult(IdentityResult.Success);
         }
 
         private TRedirectUri CreateRedirectUri(TApplication app, string redirectUri, bool isLogout)
@@ -247,7 +247,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             return registration;
         }
 
-        public async Task<IdentityServiceResult> UnregisterRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UnregisterRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -266,10 +266,10 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 
             RedirectUris.Remove(registeredUri);
 
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
-        public async Task<IdentityServiceResult> UpdateRedirectUriAsync(
+        public async Task<IdentityResult> UpdateRedirectUriAsync(
             TApplication app,
             string oldRedirectUri,
             string newRedirectUri,
@@ -297,7 +297,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 
             existingRedirectUri.Value = newRedirectUri;
 
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
         public async Task<IEnumerable<string>> FindRegisteredLogoutUrisAsync(TApplication app, CancellationToken cancellationToken)
@@ -317,7 +317,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             return redirectUris;
         }
 
-        public Task<IdentityServiceResult> RegisterLogoutRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
+        public Task<IdentityResult> RegisterLogoutRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -333,10 +333,10 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 
             RedirectUris.Add(CreateRedirectUri(app, redirectUri, isLogout: true));
 
-            return Task.FromResult(IdentityServiceResult.Success);
+            return Task.FromResult(IdentityResult.Success);
         }
 
-        public async Task<IdentityServiceResult> UnregisterLogoutRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UnregisterLogoutRedirectUriAsync(TApplication app, string redirectUri, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -355,10 +355,10 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 
             RedirectUris.Remove(registeredUri);
 
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
-        public async Task<IdentityServiceResult> UpdateLogoutRedirectUriAsync(TApplication app, string oldRedirectUri, string newRedirectUri, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateLogoutRedirectUriAsync(TApplication app, string oldRedirectUri, string newRedirectUri, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -382,7 +382,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 
             existingRedirectUri.Value = newRedirectUri;
 
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
         protected void ThrowIfDisposed()
@@ -496,7 +496,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             return scopes;
         }
 
-        public Task<IdentityServiceResult> AddScopeAsync(TApplication application, string scope, CancellationToken cancellationToken)
+        public Task<IdentityResult> AddScopeAsync(TApplication application, string scope, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -512,7 +512,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 
             Scopes.Add(CreateScope(application, scope));
 
-            return Task.FromResult(IdentityServiceResult.Success);
+            return Task.FromResult(IdentityResult.Success);
         }
 
         private TScope CreateScope(TApplication application, string scope)
@@ -524,7 +524,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             };
         }
 
-        public async Task<IdentityServiceResult> UpdateScopeAsync(TApplication application, string oldScope, string newScope, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateScopeAsync(TApplication application, string oldScope, string newScope, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -547,10 +547,10 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 .SingleAsync(s => s.ApplicationId.Equals(application.Id) && s.Value.Equals(oldScope));
             existingScope.Value = newScope;
 
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
-        public async Task<IdentityServiceResult> RemoveScopeAsync(TApplication application, string scope, CancellationToken cancellationToken)
+        public async Task<IdentityResult> RemoveScopeAsync(TApplication application, string scope, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -568,7 +568,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 .SingleAsync(ru => ru.ApplicationId.Equals(application.Id) && ru.Value.Equals(scope));
             Scopes.Remove(existingScope);
 
-            return IdentityServiceResult.Success;
+            return IdentityResult.Success;
         }
 
         public async Task<IList<Claim>> GetClaimsAsync(TApplication application, CancellationToken cancellationToken)

@@ -3,7 +3,7 @@
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityServiceErrorCodes
+    public class IdentityErrorCodes
     {
         public const string InvalidRequest = "invalid_request";
     }

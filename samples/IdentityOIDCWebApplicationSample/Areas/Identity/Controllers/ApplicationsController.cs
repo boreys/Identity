@@ -617,7 +617,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return RedirectToAction(nameof(AddLogoutUri), new { id });
         }
 
-        private void MapErrorsToModelState(string key, IdentityServiceResult result)
+        private void MapErrorsToModelState(string key, IdentityResult result)
         {
             foreach (var error in result.Errors)
             {

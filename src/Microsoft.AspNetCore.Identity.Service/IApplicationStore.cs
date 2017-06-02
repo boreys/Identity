@@ -10,9 +10,9 @@ namespace Microsoft.AspNetCore.Identity.Service
 {
     public interface IApplicationStore<TApplication> : IDisposable where TApplication : class
     {
-        Task<IdentityServiceResult> CreateAsync(TApplication application, CancellationToken cancellationToken);
-        Task<IdentityServiceResult> UpdateAsync(TApplication application, CancellationToken cancellationToken);
-        Task<IdentityServiceResult> DeleteAsync(TApplication application, CancellationToken cancellationToken);
+        Task<IdentityResult> CreateAsync(TApplication application, CancellationToken cancellationToken);
+        Task<IdentityResult> UpdateAsync(TApplication application, CancellationToken cancellationToken);
+        Task<IdentityResult> DeleteAsync(TApplication application, CancellationToken cancellationToken);
         Task<TApplication> FindByIdAsync(string applicationId, CancellationToken cancellationToken);
         Task<IEnumerable<TApplication>> FindByUserIdAsync(string applicationId, CancellationToken cancellationToken);
         Task<TApplication> FindByClientIdAsync(string clientId, CancellationToken cancellationToken);

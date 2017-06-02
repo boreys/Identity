@@ -43,7 +43,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -211,7 +211,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -238,7 +238,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -269,7 +269,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -300,7 +300,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -331,7 +331,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -361,7 +361,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -395,7 +395,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -430,7 +430,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -465,7 +465,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Theory]
@@ -502,7 +502,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -537,7 +537,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         [Fact]
@@ -609,7 +609,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Assert
             Assert.NotNull(tokenRequest);
             Assert.False(tokenRequest.IsValid);
-            Assert.Equal(expectedError, tokenRequest.Error, IdentityServiceErrorComparer.Instance);
+            Assert.Equal(expectedError, tokenRequest.Error, IdentityErrorComparer.Instance);
         }
 
         private IClientIdValidator GetClientIdValidator(bool isClientIdValid = false, bool areClientCredentialsValid = false)

@@ -29,7 +29,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication(name: name, clientId: Guid.NewGuid().ToString());
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError>
+            var expectedError = new List<IdentityError>
             {
                 errorDescriber.InvalidApplicationName(name)
             };
@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication("ApplicationId", name, Guid.NewGuid().ToString());
             var manager = CreateTestManager(duplicateName: true);
 
-            var expectedError = new List<IdentityServiceError>
+            var expectedError = new List<IdentityError>
             {
                 errorDescriber.DuplicateApplicationName(name)
             };
@@ -78,7 +78,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication(clientId: clientId);
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError>
+            var expectedError = new List<IdentityError>
             {
                 errorDescriber.InvalidApplicationClientId(clientId)
             };
@@ -102,7 +102,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication("ApplicationId", "TestApplication", clientId);
             var manager = CreateTestManager(duplicateClientId: true);
 
-            var expectedError = new List<IdentityServiceError>
+            var expectedError = new List<IdentityError>
             {
                 errorDescriber.DuplicateApplicationClientId(clientId)
             };
@@ -142,7 +142,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> { errorDescriber.DuplicateLogoutUri(logoutUri) };
+            var expectedError = new List<IdentityError> { errorDescriber.DuplicateLogoutUri(logoutUri) };
 
             // Act
             var result = await validator.ValidateLogoutUriAsync(manager, application, logoutUri);
@@ -160,7 +160,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> { errorDescriber.InvalidLogoutUri("/signout-oidc") };
+            var expectedError = new List<IdentityError> { errorDescriber.InvalidLogoutUri("/signout-oidc") };
 
             // Act
             var result = await validator.ValidateLogoutUriAsync(manager, application, "/signout-oidc");
@@ -178,7 +178,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> {
+            var expectedError = new List<IdentityError> {
                 errorDescriber.InvalidLogoutUri("http://www.example.com/signout-oidc")
             };
 
@@ -198,7 +198,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> { errorDescriber.DifferentDomains() };
+            var expectedError = new List<IdentityError> { errorDescriber.DifferentDomains() };
 
             // Act
             var result = await validator.ValidateLogoutUriAsync(manager, application, "https://www.contoso.com/signout-oidc");
@@ -216,7 +216,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> {
+            var expectedError = new List<IdentityError> {
                 errorDescriber.InvalidLogoutUri("urn:self:aspnet:identity:integrated")
             };
 
@@ -257,7 +257,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> { errorDescriber.DuplicateRedirectUri(redirectUri) };
+            var expectedError = new List<IdentityError> { errorDescriber.DuplicateRedirectUri(redirectUri) };
 
             // Act
             var result = await validator.ValidateRedirectUriAsync(manager, application, redirectUri);
@@ -275,7 +275,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> { errorDescriber.InvalidRedirectUri("/signin-oidc") };
+            var expectedError = new List<IdentityError> { errorDescriber.InvalidRedirectUri("/signin-oidc") };
 
             // Act
             var result = await validator.ValidateRedirectUriAsync(manager, application, "/signin-oidc");
@@ -293,7 +293,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> {
+            var expectedError = new List<IdentityError> {
                 errorDescriber.InvalidRedirectUri("http://www.example.com/signin-oidc")
             };
 
@@ -313,7 +313,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> { errorDescriber.DifferentDomains() };
+            var expectedError = new List<IdentityError> { errorDescriber.DifferentDomains() };
 
             // Act
             var result = await validator.ValidateRedirectUriAsync(manager, application, "https://www.contoso.com/signin-oidc");
@@ -331,7 +331,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError> {
+            var expectedError = new List<IdentityError> {
                 errorDescriber.InvalidRedirectUri("urn:self:aspnet:identity:integrated")
             };
 
@@ -372,7 +372,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError>
+            var expectedError = new List<IdentityError>
             {
                 errorDescriber.InvalidScope(scope)
             };
@@ -396,7 +396,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
             var application = CreateApplication();
             var manager = CreateTestManager();
 
-            var expectedError = new List<IdentityServiceError>
+            var expectedError = new List<IdentityError>
             {
                 errorDescriber.DuplicateScope(scope)
             };
@@ -492,13 +492,13 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
                 new ApplicationErrorDescriber());
         }
 
-        private class ErrorsComparer : IEqualityComparer<IEnumerable<IdentityServiceError>>
+        private class ErrorsComparer : IEqualityComparer<IEnumerable<IdentityError>>
         {
             public static ErrorsComparer Instance = new ErrorsComparer();
 
             public bool Equals(
-                IEnumerable<IdentityServiceError> left,
-                IEnumerable<IdentityServiceError> right)
+                IEnumerable<IdentityError> left,
+                IEnumerable<IdentityError> right)
             {
                 var leftOrdered = left.OrderBy(o => o.Code).ThenBy(o => o.Description).ToArray();
                 var rightOrdered = right.OrderBy(o => o.Code).ThenBy(o => o.Description).ToArray();
@@ -508,7 +508,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Test
                     s.Description.Equals(rightOrdered[i].Description)).All(a => a);
             }
 
-            public int GetHashCode(IEnumerable<IdentityServiceError> obj)
+            public int GetHashCode(IEnumerable<IdentityError> obj)
             {
                 return 1;
             }
