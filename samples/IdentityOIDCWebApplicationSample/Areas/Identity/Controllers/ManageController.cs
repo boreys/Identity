@@ -3,17 +3,17 @@ using System.Threading.Tasks;
 using IdentityOIDCWebApplicationSample.Identity.Models;
 using IdentityOIDCWebApplicationSample.Identity.Models.ManageViewModels;
 using IdentityOIDCWebApplicationSample.Identity.Services;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace IdentityOIDCWebApplicationSample.Identity.Controllers
 {
-    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.SessionPolicyName)]
-    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.LoginPolicyName)]
+    [Authorize(ApplicationsAuthenticationDefaults.SessionPolicyName)]
+    [Authorize(ApplicationsAuthenticationDefaults.LoginPolicyName)]
     [Area("Identity")]
     [Route("tfp/Identity/signinsignup/[controller]/[action]")]
     public class ManageController : Controller

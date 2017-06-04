@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.AspNetCore.Identity.Service.Core
 {
-    public class IdentityTokensOptionsConfigurationDefaultSetup : ConfigureDefaultOptions<TokenOptions>
+    public class IdentityTokensOptionsConfigurationDefaultSetup : ConfigureDefaultOptions<ApplicationTokenOptions>
     {
         public const string SectionKey = "Microsoft:AspNetCore:Identity:Service";
 
@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Core
         }
 
         private static void ConfigureOptions(
-            TokenOptions options,
+            ApplicationTokenOptions options,
             IConfiguration configuration,
             ILoggerFactory loggerFactory)
         {

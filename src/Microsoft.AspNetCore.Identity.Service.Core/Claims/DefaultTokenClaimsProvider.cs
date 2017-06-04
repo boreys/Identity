@@ -12,9 +12,9 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
 {
     public class DefaultTokenClaimsProvider : ITokenClaimsProvider
     {
-        private readonly IOptions<TokenOptions> _options;
+        private readonly IOptions<ApplicationTokenOptions> _options;
 
-        public DefaultTokenClaimsProvider(IOptions<TokenOptions> options)
+        public DefaultTokenClaimsProvider(IOptions<ApplicationTokenOptions> options)
         {
             _options = options;
         }

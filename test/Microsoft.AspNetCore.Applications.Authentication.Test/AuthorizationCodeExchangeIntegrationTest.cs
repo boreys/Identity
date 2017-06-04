@@ -139,9 +139,9 @@ namespace Microsoft.AspNetCore.Identity.Service
             var factory = new LoggerFactory();
             var protector = new EphemeralDataProtectionProvider(factory).CreateProtector("test");
             var codeSerializer = new TokenDataSerializer<AuthorizationCode>(options, ArrayPool<char>.Shared);
-            var codeDataFormat = new SecureDataFormat<AuthorizationCode>(codeSerializer, protector);
+            var codeDataFormat = new Core.SecureDataFormat<AuthorizationCode>(codeSerializer, protector);
             var refreshTokenSerializer = new TokenDataSerializer<RefreshToken>(options, ArrayPool<char>.Shared);
-            var refreshTokenDataFormat = new SecureDataFormat<RefreshToken>(refreshTokenSerializer, protector);
+            var refreshTokenDataFormat = new Core.SecureDataFormat<RefreshToken>(refreshTokenSerializer, protector);
 
             var timeStampManager = new TimeStampManager();
             var credentialsPolicy = GetCredentialsPolicy(options, timeStampManager);
@@ -158,16 +158,15 @@ namespace Microsoft.AspNetCore.Identity.Service
                 new ProtocolErrorProvider());
         }
 
-        private static DefaultSigningCredentialsPolicyProvider GetCredentialsPolicy(IOptionsSnapshot<TokenOptions> options, TimeStampManager timeStampManager) =>
+        private static DefaultSigningCredentialsPolicyProvider GetCredentialsPolicy(IOptionsSnapshot<ApplicationTokenOptions> options, TimeStampManager timeStampManager) =>
             new DefaultSigningCredentialsPolicyProvider(
                 new List<ISigningCredentialsSource> {
                     new DefaultSigningCredentialsSource(options, timeStampManager)
                 },
-                timeStampManager,
-                new HostingEnvironment());
+                timeStampManager);
 
         private static ITokenClaimsManager CreateClaimsManager(
-            IOptions<TokenOptions> options)
+            IOptions<ApplicationTokenOptions> options)
         {
             return new DefaultTokenClaimsManager(
                 new List<ITokenClaimsProvider>{
@@ -180,9 +179,9 @@ namespace Microsoft.AspNetCore.Identity.Service
                 });
         }
 
-        private static IOptionsSnapshot<TokenOptions> CreateOptions()
+        private static IOptionsSnapshot<ApplicationTokenOptions> CreateOptions()
         {
-            var tokenOptions = new TokenOptions();
+            var tokenOptions = new ApplicationTokenOptions();
             var optionsSetup = new IdentityTokensOptionsDefaultSetup();
             optionsSetup.Configure(tokenOptions);
 
@@ -197,7 +196,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 TokenClaimTypes.Subject,
                 ClaimTypes.NameIdentifier);
 
-            var mock = new Mock<IOptionsSnapshot<TokenOptions>>();
+            var mock = new Mock<IOptionsSnapshot<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(tokenOptions);
             mock.Setup(m => m.Get(It.IsAny<string>())).Returns(tokenOptions);
 

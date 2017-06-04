@@ -181,9 +181,9 @@ namespace Microsoft.AspNetCore.Identity.Service
             return manager.Object;
         }
 
-        private IOptions<TokenOptions> GetOptions()
+        private IOptions<ApplicationTokenOptions> GetOptions()
         {
-            var IdentityServiceOptions = new TokenOptions()
+            var IdentityServiceOptions = new ApplicationTokenOptions()
             {
                 Issuer = "http://www.example.com/issuer"
             };
@@ -192,7 +192,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             var optionsSetup = new IdentityTokensOptionsDefaultSetup();
             optionsSetup.Configure(IdentityServiceOptions);
 
-            var mock = new Mock<IOptions<TokenOptions>>();
+            var mock = new Mock<IOptions<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(IdentityServiceOptions);
 
             return mock.Object;
@@ -214,10 +214,10 @@ namespace Microsoft.AspNetCore.Identity.Service
         }
 
         private ISigningCredentialsPolicyProvider GetSigningPolicy(
-            IOptions<TokenOptions> options,
+            IOptions<ApplicationTokenOptions> options,
             ITimeStampManager timeStampManager)
         {
-            var mock = new Mock<IOptionsSnapshot<TokenOptions>>();
+            var mock = new Mock<IOptionsSnapshot<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(options.Value);
             mock.Setup(m => m.Get(It.IsAny<string>())).Returns(options.Value);
 
@@ -225,8 +225,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 new List<ISigningCredentialsSource> {
                             new DefaultSigningCredentialsSource(mock.Object, timeStampManager)
                 },
-                timeStampManager,
-                new HostingEnvironment());
+                timeStampManager);
         }
     }
 }

@@ -9,24 +9,15 @@ using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class IdentityTokensOptionsDefaultSetup : IConfigureOptions<TokenOptions>
+    public class IdentityTokensOptionsDefaultSetup : IConfigureOptions<ApplicationTokenOptions>
     {
-        public void Configure(TokenOptions options)
+        public void Configure(ApplicationTokenOptions options)
         {
-            //options.LoginPolicy = new AuthorizationPolicyBuilder()
-            //    .RequireAuthenticatedUser()
-            //    .Build();
-
-            //options.SessionPolicy = new AuthorizationPolicyBuilder()
-            //    .AddAuthenticationSchemes(TokenOptions.CookieAuthenticationScheme)
-            //    .RequireAuthenticatedUser()
-            //    .Build();
-
             options.SerializationSettings = CreateDefault();
             options.SerializationSettings.Converters.Insert(0, new AuthorizationCodeConverter());
             options.SerializationSettings.Converters.Insert(0, new RefreshTokenConverter());
-            options.AuthorizationCodeOptions = CreateAuthorizationCodeOptions(TimeSpan.FromMinutes(5), TimeSpan.Zero);
 
+            options.AuthorizationCodeOptions = CreateAuthorizationCodeOptions(TimeSpan.FromMinutes(5), TimeSpan.Zero);
             options.AccessTokenOptions = CreateAccessTokenOptions(TimeSpan.FromHours(2), TimeSpan.Zero);
             options.RefreshTokenOptions = CreateRefreshTokenOptions(TimeSpan.FromDays(30), TimeSpan.Zero);
             options.IdTokenOptions = CreateIdTokenOptions(TimeSpan.FromHours(2), TimeSpan.Zero);

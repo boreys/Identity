@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
     {
         public static IIdentityClientApplicationsBuilder AddApplications(
             this IdentityBuilder builder,
-            Action<TokenOptions> configure)
+            Action<ApplicationTokenOptions> configure)
         {
             if (builder == null)
             {
@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(configure));
             }
 
-            return builder.AddApplications<IdentityClientApplication>(configure);
+            return builder.AddApplicationsCore<IdentityClientApplication>(configure);
         }
 
         public static IIdentityClientApplicationsBuilder AddApplications(
@@ -35,7 +35,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            return builder.AddApplications<IdentityClientApplication>();
+            return builder.AddApplicationsCore<IdentityClientApplication>();
         }
 
         public static IIdentityClientApplicationsBuilder AddEntityFrameworkStores<TContext>(this IIdentityClientApplicationsBuilder builder)

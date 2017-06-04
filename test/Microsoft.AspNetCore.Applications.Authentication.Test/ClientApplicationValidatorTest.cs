@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         public async Task ValidateClientIdAsync_ChecksThatTheClientIdExist(bool exists)
         {
             // Arrange
-            var options = new TokenOptions();
+            var options = new ApplicationTokenOptions();
             var store = new Mock<IApplicationStore<IdentityClientApplication>>();
             store.Setup(s => s.FindByClientIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(exists ? new IdentityClientApplication() : null);
@@ -52,7 +53,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         public async Task ValidateClientCredentialsAsync_DelegatesToApplicationManager()
         {
             // Arrange
-            var options = new TokenOptions();
+            var options = new ApplicationTokenOptions();
             var store = new Mock<IApplicationStore<IdentityClientApplication>>();
             store.Setup(s => s.FindByClientIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new IdentityClientApplication());
@@ -84,9 +85,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         private SessionManager GetSessionManager()
         {
             return new TestSessionManager(
-                Mock.Of<IOptions<TokenOptions>>(),
-                Mock.Of<IOptions<IdentityOptions>>(),
-                Mock.Of<IOptionsSnapshot<CookieAuthenticationOptions>>(),
+                Mock.Of<IAuthorizationPolicyProvider>(),
                 new TimeStampManager(),
                 Mock.Of<IHttpContextAccessor>(),
                 new ProtocolErrorProvider());
@@ -95,13 +94,11 @@ namespace Microsoft.AspNetCore.Identity.Service
         private class TestSessionManager : SessionManager
         {
             public TestSessionManager(
-                IOptions<TokenOptions> options,
-                IOptions<IdentityOptions> identityOptions,
-                IOptionsSnapshot<CookieAuthenticationOptions> cookieOptions,
+                IAuthorizationPolicyProvider policyProvider,
                 ITimeStampManager timeStampManager,
                 IHttpContextAccessor contextAccessor,
                 ProtocolErrorProvider errorProvider) :
-                base(options, identityOptions, cookieOptions, timeStampManager, contextAccessor, errorProvider)
+                base(policyProvider, timeStampManager, contextAccessor, errorProvider)
             {
             }
 

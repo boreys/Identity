@@ -298,9 +298,9 @@ namespace Microsoft.AspNetCore.Identity.Service
             return manager.Object;
         }
 
-        private IOptions<TokenOptions> GetOptions()
+        private IOptions<ApplicationTokenOptions> GetOptions()
         {
-            var identityServiceOptions = new TokenOptions()
+            var identityServiceOptions = new ApplicationTokenOptions()
             {
                 Issuer = "http://www.example.com/issuer"
             };
@@ -310,7 +310,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             identityServiceOptions.SigningKeys.Add(new SigningCredentials(CryptoUtilities.CreateTestKey(), "RS256"));
             identityServiceOptions.IdTokenOptions.UserClaims.AddSingle("sub", ClaimTypes.NameIdentifier);
 
-            var mock = new Mock<IOptions<TokenOptions>>();
+            var mock = new Mock<IOptions<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(identityServiceOptions);
 
             return mock.Object;
@@ -332,18 +332,17 @@ namespace Microsoft.AspNetCore.Identity.Service
         }
 
         private ISigningCredentialsPolicyProvider GetSigningPolicy(
-            IOptions<TokenOptions> options,
+            IOptions<ApplicationTokenOptions> options,
             ITimeStampManager timeManager)
         {
-            var mock = new Mock<IOptionsSnapshot<TokenOptions>>();
+            var mock = new Mock<IOptionsSnapshot<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(options.Value);
             mock.Setup(m => m.Get(It.IsAny<string>())).Returns(options.Value);
             return new DefaultSigningCredentialsPolicyProvider(
                 new List<ISigningCredentialsSource> {
                             new DefaultSigningCredentialsSource(mock.Object, timeManager)
                 },
-                timeManager,
-                new HostingEnvironment());
+                timeManager);
         }
     }
 }

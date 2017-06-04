@@ -46,7 +46,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 mockSource.Object
             };
 
-            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager(), new HostingEnvironment());
+            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager());
 
             // Act
             var credentials = await policyProvider.GetAllCredentialsAsync();
@@ -97,7 +97,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 mockSource.Object
             };
 
-            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager(), new HostingEnvironment());
+            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager());
 
             // Act
             var credentials = await policyProvider.GetAllCredentialsAsync();
@@ -153,7 +153,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 mockSource.Object
             };
 
-            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager(), new HostingEnvironment());
+            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager());
 
             // Act
             var credentials = await policyProvider.GetAllCredentialsAsync();
@@ -206,7 +206,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 mockSource.Object
             };
 
-            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager(), new HostingEnvironment());
+            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager());
 
             // Act
             var signingCredential = await policyProvider.GetSigningCredentialsAsync();
@@ -262,7 +262,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 mockSource.Object
             };
 
-            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager(), new HostingEnvironment());
+            var policyProvider = new DefaultSigningCredentialsPolicyProvider(sources, new TimeStampManager());
 
             // Act
             var signingCredential = await policyProvider.GetSigningCredentialsAsync();

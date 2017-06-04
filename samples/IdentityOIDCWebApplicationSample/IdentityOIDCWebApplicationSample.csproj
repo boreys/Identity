@@ -48,12 +48,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0-preview1-final" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0-preview1-final" />
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0-preview1-final" />
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="$(AspNetCoreVersion)" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="$(AspNetCoreVersion)" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="$(AspNetCoreVersion)" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.AspNetCore.Applications.Authentication\Microsoft.AspNetCore.Applications.Authentication.csproj" />
     <ProjectReference Include="..\..\src\Microsoft.AspNetCore.Diagnostics.Identity.Service\Microsoft.AspNetCore.Diagnostics.Identity.Service.csproj" />
     <ProjectReference Include="..\..\src\Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore\Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\Microsoft.AspNetCore.Identity.Service.IntegratedWebClient\Microsoft.AspNetCore.Identity.Service.IntegratedWebClient.csproj" />

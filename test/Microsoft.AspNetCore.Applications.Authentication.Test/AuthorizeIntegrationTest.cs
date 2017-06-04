@@ -1,5 +1,4 @@
-﻿// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Buffers;
@@ -126,9 +125,9 @@ namespace Microsoft.AspNetCore.Identity.Service
 
             var protector = new EphemeralDataProtectionProvider(new LoggerFactory()).CreateProtector("test");
             var codeSerializer = new TokenDataSerializer<AuthorizationCode>(options, ArrayPool<char>.Shared);
-            var codeDataFormat = new SecureDataFormat<AuthorizationCode>(codeSerializer, protector);
+            var codeDataFormat = new Core.SecureDataFormat<AuthorizationCode>(codeSerializer, protector);
             var refreshTokenSerializer = new TokenDataSerializer<RefreshToken>(options, ArrayPool<char>.Shared);
-            var refreshTokenDataFormat = new SecureDataFormat<RefreshToken>(refreshTokenSerializer, protector);
+            var refreshTokenDataFormat = new Core.SecureDataFormat<RefreshToken>(refreshTokenSerializer, protector);
 
             var timeStampManager = new TimeStampManager();
             var credentialsPolicy = GetCredentialsPolicy(options, timeStampManager);
@@ -145,16 +144,15 @@ namespace Microsoft.AspNetCore.Identity.Service
                 new ProtocolErrorProvider());
         }
 
-        private static DefaultSigningCredentialsPolicyProvider GetCredentialsPolicy(IOptionsSnapshot<TokenOptions> options, TimeStampManager timeStampManager) =>
+        private static DefaultSigningCredentialsPolicyProvider GetCredentialsPolicy(IOptionsSnapshot<ApplicationTokenOptions> options, TimeStampManager timeStampManager) =>
             new DefaultSigningCredentialsPolicyProvider(
                 new List<ISigningCredentialsSource> {
                             new DefaultSigningCredentialsSource(options, timeStampManager)
                 },
-                timeStampManager,
-                new HostingEnvironment());
+                timeStampManager);
 
         private static ITokenClaimsManager GetClaimsManager(
-            IOptions<TokenOptions> options)
+            IOptions<ApplicationTokenOptions> options)
         {
             return new DefaultTokenClaimsManager(
                 new List<ITokenClaimsProvider>{
@@ -167,9 +165,9 @@ namespace Microsoft.AspNetCore.Identity.Service
                 });
         }
 
-        private static IOptionsSnapshot<TokenOptions> CreateOptions()
+        private static IOptionsSnapshot<ApplicationTokenOptions> CreateOptions()
         {
-            var identityServiceOptions = new TokenOptions();
+            var identityServiceOptions = new ApplicationTokenOptions();
             var optionsSetup = new IdentityTokensOptionsDefaultSetup();
             optionsSetup.Configure(identityServiceOptions);
 
@@ -177,7 +175,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             identityServiceOptions.Issuer = "http://server.example.com";
             identityServiceOptions.IdTokenOptions.UserClaims.AddSingle("sub", ClaimTypes.NameIdentifier);
 
-            var mock = new Mock<IOptionsSnapshot<TokenOptions>>();
+            var mock = new Mock<IOptionsSnapshot<ApplicationTokenOptions>>();
             mock.Setup(m => m.Get(It.IsAny<string>())).Returns(identityServiceOptions);
             mock.Setup(m => m.Value).Returns(identityServiceOptions);
 

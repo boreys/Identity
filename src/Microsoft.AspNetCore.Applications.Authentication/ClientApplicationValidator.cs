@@ -12,13 +12,13 @@ namespace Microsoft.AspNetCore.Identity.Service
     public class ClientApplicationValidator<TApplication> : IClientIdValidator, IRedirectUriResolver, IScopeResolver
         where TApplication : class
     {
-        private readonly IOptions<TokenOptions> _options;
+        private readonly IOptions<ApplicationTokenOptions> _options;
         private readonly SessionManager _sessionManager;
         private readonly ApplicationManager<TApplication> _applicationManager;
         private readonly ProtocolErrorProvider _errorProvider;
 
         public ClientApplicationValidator(
-            IOptions<TokenOptions> options,
+            IOptions<ApplicationTokenOptions> options,
             SessionManager sessionManager,
             ApplicationManager<TApplication> applicationManager,
             ProtocolErrorProvider errorProvider)

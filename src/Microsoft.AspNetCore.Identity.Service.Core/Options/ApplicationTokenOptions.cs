@@ -7,21 +7,9 @@ using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class TokenOptions
+    public class ApplicationTokenOptions
     {
-        public const string LoginPolicyName = "Microsoft.AspNetCore.Identity.Service.Login";
-        public const string SessionPolicyName = "Microsoft.AspNetCore.Identity.Service.Session";
-        public const string ManagementPolicyName = "Microsoft.AspNetCore.Identity.Service.Management";
-        public const string CookieAuthenticationScheme = "Microsoft.AspNetCore.Identity.Service.Session.Cookies";
-        public const string AuthenticationCookieName = "Microsoft.AspNetCore.Identity.Service";
-
         public string Issuer { get; set; }
-
-        //        public AuthorizationPolicy LoginPolicy { get; set; }
-
-        //        public AuthorizationPolicy SessionPolicy { get; set; }
-
-        //        public AuthorizationPolicy ManagementPolicy { get; set; }
 
         public IList<SigningCredentials> SigningKeys { get; set; } = new List<SigningCredentials>();
 

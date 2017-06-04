@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity.Service.Claims;
+using Microsoft.AspNetCore.Identity.Service.Core;
 using Microsoft.AspNetCore.Identity.Service.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -191,9 +191,9 @@ namespace Microsoft.AspNetCore.Identity.Service
             return mock.Object;
         }
 
-        private IOptions<TokenOptions> GetOptions()
+        private IOptions<ApplicationTokenOptions> GetOptions()
         {
-            var IdentityServiceOptions = new TokenOptions()
+            var IdentityServiceOptions = new ApplicationTokenOptions()
             {
                 Issuer = "http://www.example.com/issuer"
             };
@@ -202,7 +202,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             var optionsSetup = new IdentityTokensOptionsDefaultSetup();
             optionsSetup.Configure(IdentityServiceOptions);
 
-            var mock = new Mock<IOptions<TokenOptions>>();
+            var mock = new Mock<IOptions<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(IdentityServiceOptions);
 
             return mock.Object;

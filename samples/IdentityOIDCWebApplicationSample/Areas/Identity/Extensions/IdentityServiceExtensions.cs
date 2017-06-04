@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Extensions
     {
         public static IIdentityClientApplicationsBuilder AddClientExtensions(this IIdentityClientApplicationsBuilder builder)
         {
-            builder.Services.Configure<TokenOptions>(options =>
+            builder.Services.Configure<ApplicationTokenOptions>(options =>
             {
                 options.IdTokenOptions.ContextClaims.AddSingle("tfp", "policy");
                 options.IdTokenOptions.ContextClaims.AddSingle("ver", "version");

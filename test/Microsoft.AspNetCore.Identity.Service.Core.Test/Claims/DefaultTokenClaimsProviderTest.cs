@@ -28,7 +28,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                 new OpenIdConnectMessage(),
                 new RequestGrants());
 
-            var options = new TokenOptions()
+            var options = new ApplicationTokenOptions()
             {
                 Issuer = "http://www.example.com/Identity"
             };
@@ -57,7 +57,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                 new OpenIdConnectMessage(),
                 new RequestGrants());
 
-            var options = new TokenOptions()
+            var options = new ApplicationTokenOptions()
             {
                 Issuer = "http://www.example.com/Identity"
             };
@@ -85,7 +85,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
                 new OpenIdConnectMessage() { RedirectUri = expectedRedirectUri },
                 new RequestGrants());
 
-            var options = new TokenOptions()
+            var options = new ApplicationTokenOptions()
             {
                 Issuer = "http://www.example.com/Identity"
             };
@@ -166,7 +166,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
             context.AmbientClaims.Add(new Claim("context-multiple-aliased", "cma1"));
             context.AmbientClaims.Add(new Claim("context-multiple-aliased", "cma2"));
 
-            var options = new TokenOptions()
+            var options = new ApplicationTokenOptions()
             {
                 Issuer = "http://www.example.com/Identity"
             };

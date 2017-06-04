@@ -28,14 +28,14 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         private readonly ITokenClaimsManager _claimsManager;
         private readonly JwtSecurityTokenHandler _handler;
-        private readonly TokenOptions _options;
+        private readonly ApplicationTokenOptions _options;
         private readonly ISigningCredentialsPolicyProvider _credentialsProvider;
 
         public JwtIdTokenIssuer(
             ITokenClaimsManager claimsManager,
             ISigningCredentialsPolicyProvider credentialsProvider,
             JwtSecurityTokenHandler handler,
-            IOptions<TokenOptions> options)
+            IOptions<ApplicationTokenOptions> options)
         {
             _claimsManager = claimsManager;
             _credentialsProvider = credentialsProvider;

@@ -25,7 +25,6 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             var configurationContext = new ConfigurationContext
             {
                 Id = "Identity:signinsignup",
-                HttpContext = HttpContext,
                 AuthorizationEndpoint = EndpointLink("Authorize", "ApplicationAuthorization"),
                 TokenEndpoint = EndpointLink("Token", "ApplicationAuthorization"),
                 JwksUriEndpoint = EndpointLink("Keys", "ConfigurationMetadata"),

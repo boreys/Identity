@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Identity.Service.Configuration
 {
-    public class TokenOptionsSetup : IConfigureOptions<TokenOptions>
+    public class TokenOptionsSetup : IConfigureOptions<ApplicationTokenOptions>
     {
         private readonly IOptions<IdentityOptions> _options;
 
@@ -16,7 +16,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Configuration
             _options = options;
         }
 
-        public void Configure(TokenOptions options)
+        public void Configure(ApplicationTokenOptions options)
         {
             options.IdTokenOptions.UserClaims
                 .AddSingle(TokenClaimTypes.Subject, _options.Value.ClaimsIdentity.UserIdClaimType);
@@ -27,15 +27,15 @@ namespace Microsoft.AspNetCore.Identity.Service.Configuration
             options.AccessTokenOptions.UserClaims
                 .AddSingle(TokenClaimTypes.Name, _options.Value.ClaimsIdentity.UserNameClaimType);
 
-            options.LoginPolicy = new AuthorizationPolicyBuilder(options.LoginPolicy)
-                .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
-                .Build();
+            //options.LoginPolicy = new AuthorizationPolicyBuilder(options.LoginPolicy)
+            //    .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
+            //    .Build();
 
-            options.ManagementPolicy = new AuthorizationPolicyBuilder()
-                .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
-                .AddAuthenticationSchemes(TokenOptions.CookieAuthenticationScheme)
-                .AddRequirements(new ApplicationManagementRequirement())
-                .Build();
+            //options.ManagementPolicy = new AuthorizationPolicyBuilder()
+            //    .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
+            //    .AddAuthenticationSchemes(ApplicationTokenOptions.CookieAuthenticationScheme)
+            //    .AddRequirements(new ApplicationManagementRequirement())
+            //    .Build();
         }
     }
 }

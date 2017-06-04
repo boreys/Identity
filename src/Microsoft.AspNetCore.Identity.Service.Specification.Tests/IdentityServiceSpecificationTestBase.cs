@@ -52,7 +52,7 @@ namespace Microsoft.AspNetCore.Identity.Service.Specification.Tests
         {
             services.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build());
             new IdentityBuilder(typeof(TestUser), typeof(TestRole), services)
-                .AddApplications<TApplication>(options => { });
+                .AddApplicationsCore<TApplication>(options => { });
 
             services.AddSingleton<IApplicationValidator<TApplication>, ClaimValidator>();
 

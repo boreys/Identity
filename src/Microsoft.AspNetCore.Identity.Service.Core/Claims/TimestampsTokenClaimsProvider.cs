@@ -11,11 +11,11 @@ namespace Microsoft.AspNetCore.Identity.Service.Claims
     public class TimestampsTokenClaimsProvider : ITokenClaimsProvider
     {
         private readonly ITimeStampManager _timeStampManager;
-        private readonly IOptions<TokenOptions> _options;
+        private readonly IOptions<ApplicationTokenOptions> _options;
 
         public TimestampsTokenClaimsProvider(
             ITimeStampManager timestampManager,
-            IOptions<TokenOptions> options)
+            IOptions<ApplicationTokenOptions> options)
         {
             _timeStampManager = timestampManager;
             _options = options;

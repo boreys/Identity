@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -20,9 +21,7 @@ namespace Microsoft.AspNetCore.Identity.Service
 {
     public abstract class SessionManager
     {
-        private readonly IOptions<TokenOptions> _options;
-        private readonly IOptions<IdentityOptions> _identityOptions;
-        private readonly CookieAuthenticationOptions _sessionCookieOptions;
+        private readonly IAuthorizationPolicyProvider _policyProvider;
         private readonly ITimeStampManager _timeStampManager;
         private readonly IHttpContextAccessor _contextAccessor;
         protected readonly ProtocolErrorProvider _errorProvider;
@@ -30,19 +29,15 @@ namespace Microsoft.AspNetCore.Identity.Service
         private HttpContext _context;
 
         public SessionManager(
-            IOptions<TokenOptions> options,
-            IOptions<IdentityOptions> identityOptions,
-            IOptionsSnapshot<CookieAuthenticationOptions> cookieOptions,
+            IAuthorizationPolicyProvider policyProvider,
             ITimeStampManager timeStampManager,
             IHttpContextAccessor contextAccessor,
             ProtocolErrorProvider errorProvider)
         {
-            _options = options;
-            _identityOptions = identityOptions;
+            _policyProvider = policyProvider;
             _timeStampManager = timeStampManager;
             _contextAccessor = contextAccessor;
             _errorProvider = errorProvider;
-            _sessionCookieOptions = cookieOptions.Get(TokenOptions.CookieAuthenticationScheme);
         }
 
         public HttpContext Context
@@ -67,10 +62,10 @@ namespace Microsoft.AspNetCore.Identity.Service
         }
 
         public async Task<ClaimsPrincipal> GetCurrentSessions() =>
-            await GetPrincipal(_options.Value.SessionPolicy) ?? new ClaimsPrincipal(new ClaimsIdentity());
+            await GetPrincipal(await _policyProvider.GetPolicyAsync(ApplicationsAuthenticationDefaults.SessionPolicyName)) ?? new ClaimsPrincipal(new ClaimsIdentity());
 
         public async Task<ClaimsPrincipal> GetCurrentLoggedInUser() =>
-            await GetPrincipal(_options.Value.LoginPolicy) ?? new ClaimsPrincipal(new ClaimsIdentity());
+            await GetPrincipal(await _policyProvider.GetPolicyAsync(ApplicationsAuthenticationDefaults.LoginPolicyName)) ?? new ClaimsPrincipal(new ClaimsIdentity());
 
         private async Task<ClaimsPrincipal> GetPrincipal(AuthorizationPolicy policy)
         {
@@ -90,7 +85,7 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         public async Task StartSessionAsync(ClaimsPrincipal user, ClaimsPrincipal application)
         {
-            var policy = _options.Value.SessionPolicy;
+            var policy = await _policyProvider.GetPolicyAsync(ApplicationsAuthenticationDefaults.SessionPolicyName);
             var newPrincipal = await GetCurrentSessions();
 
             newPrincipal = FilterExistingIdentities();
@@ -102,9 +97,10 @@ namespace Microsoft.AspNetCore.Identity.Service
                 await Context.SignInAsync(scheme, newPrincipal);
             }
 
-            for (int i = 0; i < _options.Value.LoginPolicy.AuthenticationSchemes.Count; i++)
+            var loginPolicy = await _policyProvider.GetPolicyAsync(ApplicationsAuthenticationDefaults.LoginPolicyName);
+            for (int i = 0; i < loginPolicy.AuthenticationSchemes.Count; i++)
             {
-                var scheme = _options.Value.LoginPolicy.AuthenticationSchemes[i];
+                var scheme = loginPolicy.AuthenticationSchemes[i];
                 await Context.SignOutAsync(scheme);
             }
 
@@ -113,8 +109,8 @@ namespace Microsoft.AspNetCore.Identity.Service
                 var sessions = newPrincipal.Identities
                     .Where(i => !user.Identities.Select(l => l.AuthenticationType).Contains(i.AuthenticationType));
 
-                var scheme = TokenOptions.CookieAuthenticationScheme;
-                string userIdClaimType = _identityOptions.Value.ClaimsIdentity.UserIdClaimType;
+                var scheme = ApplicationsAuthenticationDefaults.CookieAuthenticationScheme;
+                string userIdClaimType = /*_identityOptions.Value.ClaimsIdentity.UserIdClaimType;*/"";
                 var userId = user.FindFirstValue(userIdClaimType);
                 var clientId = application.FindFirstValue(TokenClaimTypes.ClientId);
 
@@ -130,21 +126,17 @@ namespace Microsoft.AspNetCore.Identity.Service
             ClaimsPrincipal CreatePrincipal()
             {
                 var principal = new ClaimsPrincipal();
-                var userId = user.FindFirstValue(_identityOptions.Value.ClaimsIdentity.UserIdClaimType);
+                var userId = user.FindFirstValue(""/*_identityOptions.Value.ClaimsIdentity.UserIdClaimType*/);
                 var clientId = application.FindFirstValue(TokenClaimTypes.ClientId);
                 var logoutUris = application.FindAll(TokenClaimTypes.LogoutRedirectUri);
-
-                var duration = _sessionCookieOptions.ExpireTimeSpan;
-                var expiration = _timeStampManager.GetTimeStampInEpochTime(duration);
 
                 var identity = new ClaimsIdentity(
                     new List<Claim>(logoutUris)
                     {
                         new Claim(TokenClaimTypes.UserId,userId),
                         new Claim(TokenClaimTypes.ClientId,clientId),
-                        new Claim(TokenClaimTypes.Expires,expiration)
                     },
-                    TokenOptions.CookieAuthenticationScheme);
+                    ApplicationsAuthenticationDefaults.CookieAuthenticationScheme);
 
                 principal.AddIdentity(identity);
 
@@ -155,14 +147,14 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         public async Task<LogoutResult> EndSessionAsync(LogoutRequest request)
         {
-            var loginPolicy = _options.Value.LoginPolicy;
+            var loginPolicy = await _policyProvider.GetPolicyAsync(ApplicationsAuthenticationDefaults.LoginPolicyName);
             for (int i = 0; i < loginPolicy.AuthenticationSchemes.Count; i++)
             {
                 var scheme = loginPolicy.AuthenticationSchemes[i];
                 await Context.SignOutAsync(scheme);
             }
 
-            var policy = _options.Value.SessionPolicy;
+            var policy = await _policyProvider.GetPolicyAsync(ApplicationsAuthenticationDefaults.SessionPolicyName);
 
             for (var i = 0; i < policy.AuthenticationSchemes.Count; i++)
             {
@@ -181,7 +173,7 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         private bool IsUserSesionForApplication(ClaimsIdentity identity, string userId, string clientId)
         {
-            var userIdClaimType = _identityOptions.Value.ClaimsIdentity.UserIdClaimType;
+            var userIdClaimType = "";// _identityOptions.Value.ClaimsIdentity.UserIdClaimType;
             return identity.Claims.SingleOrDefault(c => ClaimMatches(c, userIdClaimType, userId)) != null &&
                 identity.Claims.SingleOrDefault(c => ClaimMatches(c, TokenClaimTypes.ClientId, clientId)) != null;
 
@@ -191,7 +183,7 @@ namespace Microsoft.AspNetCore.Identity.Service
 
         protected bool IsAuthenticatedWithApplication(ClaimsPrincipal loggedUser, ClaimsPrincipal sessions, OpenIdConnectMessage message)
         {
-            string userIdClaimType = _identityOptions.Value.ClaimsIdentity.UserIdClaimType;
+            string userIdClaimType = "";// _identityOptions.Value.ClaimsIdentity.UserIdClaimType;
             var userId = loggedUser.FindFirstValue(userIdClaimType);
             var clientId = message.ClientId;
 
@@ -212,9 +204,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         private readonly IApplicationClaimsPrincipalFactory<TApplication> _applicationPrincipalFactory;
 
         public SessionManager(
-            IOptions<TokenOptions> options,
-            IOptions<IdentityOptions> identityOptions,
-            IOptionsSnapshot<CookieAuthenticationOptions> cookieOptions,
+            IAuthorizationPolicyProvider policyProvider,
             ITimeStampManager timeStampManager,
             UserManager<TUser> userManager,
             IUserClaimsPrincipalFactory<TUser> userPrincipalFactory,
@@ -222,7 +212,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             ApplicationManager<TApplication> applicationManager,
             IHttpContextAccessor contextAccessor,
             ProtocolErrorProvider errorProvider)
-            : base(options, identityOptions, cookieOptions, timeStampManager, contextAccessor, errorProvider)
+            : base(policyProvider, timeStampManager, contextAccessor, errorProvider)
         {
             _userManager = userManager;
             _userPrincipalFactory = userPrincipalFactory;

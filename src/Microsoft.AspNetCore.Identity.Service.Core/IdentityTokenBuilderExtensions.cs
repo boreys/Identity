@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Identity.Service
         {
             CryptographyHelpers.ValidateRsaKeyLength(certificate);
             var key = new X509SecurityKey(certificate);
-            builder.Services.Configure<TokenOptions>(
+            builder.Services.Configure<ApplicationTokenOptions>(
                 options =>
                 {
                     var algorithm = CryptographyHelpers.FindAlgorithm(certificate);
@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             this IIdentityClientApplicationsBuilder builder,
             Func<IEnumerable<X509Certificate2>> certificatesLoader)
         {
-            builder.Services.Configure<TokenOptions>(o =>
+            builder.Services.Configure<ApplicationTokenOptions>(o =>
             {
                 var certificates = certificatesLoader();
                 foreach (var certificate in certificates)

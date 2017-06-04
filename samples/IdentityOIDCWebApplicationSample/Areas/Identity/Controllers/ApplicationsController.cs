@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IdentityOIDCWebApplicationSample.Identity.Models;
 using IdentityOIDCWebApplicationSample.Identity.Models.ApplicationViewModels;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Service;
@@ -11,7 +12,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace IdentityOIDCWebApplicationSample.Identity.Controllers
 {
-    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.ManagementPolicyName)]
+    [Authorize(ApplicationsAuthenticationDefaults.ManagementPolicyName)]
     [Area("Identity")]
     public class ApplicationsController : Controller
     {

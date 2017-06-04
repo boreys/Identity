@@ -42,7 +42,7 @@ namespace Microsoft.AspNetCore.Identity.Claims
             var reference = new DateTimeOffset(2000, 01, 01, 0, 0, 0, TimeSpan.Zero);
 
             var timestampManager = new TestTimeStampManager(reference);
-            var options = new TokenOptions();
+            var options = new ApplicationTokenOptions();
             SetTimeStampOptions(options.AuthorizationCodeOptions, 1);
             SetTimeStampOptions(options.AccessTokenOptions, 2);
             SetTimeStampOptions(options.IdTokenOptions, 3);

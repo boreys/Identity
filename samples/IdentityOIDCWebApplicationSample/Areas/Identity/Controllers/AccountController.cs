@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IdentityOIDCWebApplicationSample.Identity.Models;
 using IdentityOIDCWebApplicationSample.Identity.Models.AccountViewModels;
 using IdentityOIDCWebApplicationSample.Identity.Services;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,8 +17,8 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
 {
     [Area("Identity")]
     [Route("tfp/Identity/signinsignup/[controller]/[action]")]
-    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.LoginPolicyName)]
-    [Authorize(Microsoft.AspNetCore.Identity.Service.TokenOptions.SessionPolicyName)]
+    [Authorize(ApplicationsAuthenticationDefaults.LoginPolicyName)]
+    [Authorize(ApplicationsAuthenticationDefaults.SessionPolicyName)]
     [AllowAnonymous]
     public class AccountController : Controller
     {

@@ -4,8 +4,8 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity.Service.Claims;
+using Microsoft.AspNetCore.Identity.Service.Core;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Moq;
@@ -198,14 +198,14 @@ namespace Microsoft.AspNetCore.Identity.Service
             return manager.Object;
         }
 
-        private IOptions<TokenOptions> GetOptions()
+        private IOptions<ApplicationTokenOptions> GetOptions()
         {
-            var IdentityServiceOptions = new TokenOptions();
+            var IdentityServiceOptions = new ApplicationTokenOptions();
 
             var optionsSetup = new IdentityTokensOptionsDefaultSetup();
             optionsSetup.Configure(IdentityServiceOptions);
 
-            var mock = new Mock<IOptions<TokenOptions>>();
+            var mock = new Mock<IOptions<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(IdentityServiceOptions);
 
             return mock.Object;

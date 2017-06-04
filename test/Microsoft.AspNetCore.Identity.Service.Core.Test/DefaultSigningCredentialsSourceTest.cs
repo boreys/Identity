@@ -21,10 +21,10 @@ namespace Microsoft.AspNetCore.Identity.Service
             // Arrange
             var reference = new DateTimeOffset(2000,01,01,00,00,00,TimeSpan.Zero);
 
-            var identityServiceOptions = new TokenOptions();
+            var identityServiceOptions = new ApplicationTokenOptions();
             identityServiceOptions.SigningKeys.Add(new SigningCredentials(CryptoUtilities.CreateTestKey("RSAKey"), "RS256"));
             identityServiceOptions.SigningKeys.Add(new SigningCredentials(new X509SecurityKey(GetCertificate(reference)), "RS256"));
-            var mock = new Mock<IOptionsSnapshot<TokenOptions>>();
+            var mock = new Mock<IOptionsSnapshot<ApplicationTokenOptions>>();
             mock.Setup(m => m.Value).Returns(identityServiceOptions);
             mock.Setup(m => m.Get(It.IsAny<string>())).Returns(identityServiceOptions);
             var source = new DefaultSigningCredentialsSource(mock.Object, new TestTimeStampManager(reference));

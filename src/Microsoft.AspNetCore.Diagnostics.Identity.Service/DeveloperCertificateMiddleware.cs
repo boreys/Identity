@@ -22,12 +22,12 @@ namespace Microsoft.AspNetCore.Diagnostics.Identity.Service
         private readonly IHostingEnvironment _environment;
         private readonly IOptions<DeveloperCertificateOptions> _options;
         private readonly ITimeStampManager _timeStampManager;
-        private readonly IOptionsCache<TokenOptions> _tokenOptionsCache;
+        private readonly IOptionsCache<ApplicationTokenOptions> _tokenOptionsCache;
 
         public DeveloperCertificateMiddleware(
             RequestDelegate next,
             IOptions<DeveloperCertificateOptions> options,
-            IOptionsCache<TokenOptions> tokenOptions,
+            IOptionsCache<ApplicationTokenOptions> tokenOptions,
             ITimeStampManager timeStampManager,
             IHostingEnvironment environment)
         {
