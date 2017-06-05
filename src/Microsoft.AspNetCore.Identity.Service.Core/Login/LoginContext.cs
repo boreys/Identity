@@ -5,15 +5,15 @@ using System.Security.Claims;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    public class Session
+    public class LoginContext
     {
-        public Session(ClaimsPrincipal user, ClaimsPrincipal application)
+        public LoginContext(ClaimsPrincipal user, ClaimsPrincipal applications)
         {
             User = user;
-            Application = application;
+            Applications = applications;
         }
 
         public ClaimsPrincipal User { get; }
-        public ClaimsPrincipal Application { get; }
+        public ClaimsPrincipal Applications { get; }
     }
 }

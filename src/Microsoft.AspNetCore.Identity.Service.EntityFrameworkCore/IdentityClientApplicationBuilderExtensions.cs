@@ -10,7 +10,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 {
     public static class IdentityClientApplicationBuilderExtensions
     {
-        public static IIdentityClientApplicationsBuilder AddApplications(
+        public static IIdentityClientApplicationsBuilder AddApplicationsCore(
             this IdentityBuilder builder,
             Action<ApplicationTokenOptions> configure)
         {
@@ -27,7 +27,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             return builder.AddApplicationsCore<IdentityClientApplication>(configure);
         }
 
-        public static IIdentityClientApplicationsBuilder AddApplications(
+        public static IIdentityClientApplicationsBuilder AddApplicationsCore(
             this IdentityBuilder builder)
         {
             if (builder == null)

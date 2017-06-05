@@ -1,11 +1,10 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityOIDCWebApplicationSample.Identity.Models;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Identity.Service;
 using Microsoft.AspNetCore.Identity.Service.IntegratedWebClient;
 using Microsoft.AspNetCore.Identity.Service.Mvc;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace IdentityOIDCWebApplicationSample.Identity.Controllers
@@ -13,22 +12,19 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
     [Area("Identity")]
     public class ApplicationAuthorizationController : Controller
     {
-        private readonly IOptions<ApplicationTokenOptions> _options;
+        private readonly LoginManager _loginManager;
         private readonly ITokenManager _tokenManager;
-        private readonly SessionManager<ApplicationUser, IdentityClientApplication> _sessionManager;
         private readonly IAuthorizationResponseFactory _authorizationResponseFactory;
         private readonly ITokenResponseFactory _tokenResponseFactory;
 
         public ApplicationAuthorizationController(
-            IOptions<ApplicationTokenOptions> options,
             ITokenManager tokenManager,
-            SessionManager<ApplicationUser, IdentityClientApplication> sessionManager,
+            LoginManager loginManager,
             IAuthorizationResponseFactory authorizationResponseFactory,
             ITokenResponseFactory tokenResponseFactory)
         {
-            _options = options;
+            _loginManager = loginManager;
             _tokenManager = tokenManager;
-            _sessionManager = sessionManager;
             _authorizationResponseFactory = authorizationResponseFactory;
             _tokenResponseFactory = tokenResponseFactory;
         }
@@ -42,7 +38,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
                 return this.InvalidAuthorization(authorization.Error);
             }
 
-            var authorizationResult = await _sessionManager.IsAuthorizedAsync(authorization);
+            var authorizationResult = await _loginManager.CanLogIn(authorization);
             if (authorizationResult.Status == AuthorizationStatus.Forbidden)
             {
                 return this.InvalidAuthorization(authorizationResult.Error);
@@ -64,7 +60,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             await _tokenManager.IssueTokensAsync(context);
             var response = await _authorizationResponseFactory.CreateAuthorizationResponseAsync(context);
 
-            await _sessionManager.StartSessionAsync(authorizationResult.User, authorizationResult.Application);
+            await _loginManager.LogInAsync(authorizationResult.User, authorizationResult.Application);
 
             return this.ValidAuthorization(response);
         }
@@ -79,9 +75,10 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
                 return BadRequest(request.Error.Parameters);
             }
 
-            var session = await _sessionManager.CreateSessionAsync(request.UserId, request.ClientId);
+            var user = await _loginManager.GetUserAsync(request.UserId);
+            var application = await _loginManager.GetApplicationAsync(request.ClientId);
 
-            var context = request.CreateTokenGeneratingContext(session.User, session.Application);
+            var context = request.CreateTokenGeneratingContext(user, application);
 
             context.AmbientClaims.Add(new Claim("policy", "signinsignup"));
             context.AmbientClaims.Add(new Claim("version", "1.0"));
@@ -101,7 +98,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
                 return View("InvalidLogoutRedirect", request.Message);
             }
 
-            var endSessionResult = await _sessionManager.EndSessionAsync(request);
+            var endSessionResult = await _loginManager.LogOutAsync(request);
             if (endSessionResult.Status == LogoutStatus.RedirectToLogoutUri)
             {
                 return Redirect(endSessionResult.LogoutRedirect);

@@ -3,11 +3,13 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Service;
+using Microsoft.AspNetCore.Identity.Service.Claims;
 using Microsoft.AspNetCore.Identity.Service.Configuration;
 using Microsoft.AspNetCore.Identity.Service.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,20 +21,23 @@ namespace Microsoft.AspNetCore.Applications.Authentication
 {
     public static class ApplicationServiceCollectionExtensions
     {
-        public static IdentityBuilder AddApplications<TApplication>(this IdentityBuilder builder)
+        public static IIdentityClientApplicationsBuilder AddApplications<TApplication>(this IdentityBuilder builder)
             where TApplication : class
         {
             var services = builder.Services;
 
             services.AddOptions();
-            services.AddApplicationTokens();
             services.AddWebEncoders();
             services.AddDataProtection();
             services.AddAuthentication();
 
             builder.AddApplicationsCore<TApplication>();
 
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<AuthorizationOptions>, IdentityClientApplicationsAuthorizationOptionsSetup>());
+            services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<ApplicationTokenOptions>, TokenOptionsSetup>());
+
             services.TryAdd(CreateServices(builder.UserType, typeof(TApplication)));
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ITokenClaimsProvider, PairwiseSubClaimProvider>());
 
             services.AddCookieAuthentication(ApplicationsAuthenticationDefaults.CookieAuthenticationScheme, options =>
             {
@@ -47,25 +52,28 @@ namespace Microsoft.AspNetCore.Applications.Authentication
                 options.LoginPath = "/tfp/Identity/signinsignup/Account/Login";
                 options.AccessDeniedPath = "/tfp/Identity/signinsignup/Account/AccessDenied";
                 options.CookiePath = "/tfp/Identity/signinsignup";
+                options.Events = new CookieAuthenticationEvents()
+                {
+                    OnSigningOut = async ctx =>
+                    {
+                        await ctx.HttpContext.SignOutAsync(ApplicationsAuthenticationDefaults.CookieAuthenticationScheme);
+                        await ctx.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    }
+                };
             });
             services.ConfigureExternalCookie(options => options.CookiePath = $"/tfp/Identity/signinsignup");
             services.Configure<CookieAuthenticationOptions>(IdentityConstants.TwoFactorRememberMeScheme, options => options.CookiePath = $"/tfp/Identity");
             services.Configure<CookieAuthenticationOptions>(IdentityConstants.TwoFactorUserIdScheme, options => options.CookiePath = $"/tfp/Identity");
 
-            return builder;
+            return new IdentityClientApplicationsBuilder<TApplication>(builder);
         }
 
         private static IEnumerable<ServiceDescriptor> CreateServices(Type userType, Type applicationType)
         {
-            yield return ServiceDescriptor.Singleton<IConfigureOptions<AuthorizationOptions>, IdentityClientApplicationsAuthorizationOptionsSetup>();
-            yield return ServiceDescriptor.Transient<ConfigureDefaultOptions<ApplicationTokenOptions>, IdentityTokensOptionsConfigurationDefaultSetup>();
-            yield return ServiceDescriptor.Transient<IConfigureOptions<ApplicationTokenOptions>, IdentityTokensOptionsDefaultSetup>();
-            yield return ServiceDescriptor.Transient<IConfigureOptions<ApplicationTokenOptions>, TokenOptionsSetup>();
+            yield return ServiceDescriptor.Transient<ILoginContextProvider, LoginContextProvider>();
 
-            yield return ServiceDescriptor.Transient(typeof(SessionManager), typeof(SessionManager<,>).MakeGenericType(userType, applicationType));
-
-            var sessionType = typeof(SessionManager<,>).MakeGenericType(userType, applicationType);
-            yield return ServiceDescriptor.Transient(sessionType, sessionType);
+            var loginContextFactoryType = typeof(LoginContextFactory<,>).MakeGenericType(userType, applicationType);
+            yield return ServiceDescriptor.Transient(typeof(ILoginFactory), loginContextFactoryType);
             yield return ServiceDescriptor.Transient(typeof(IRedirectUriResolver), typeof(ClientApplicationValidator<>).MakeGenericType(applicationType));
             yield return ServiceDescriptor.Singleton<FormPostResponseGenerator, FormPostResponseGenerator>();
             yield return ServiceDescriptor.Singleton<FragmentResponseGenerator, FragmentResponseGenerator>();
@@ -97,6 +105,5 @@ namespace Microsoft.AspNetCore.Applications.Authentication
         {
             return builder;
         }
-
     }
 }

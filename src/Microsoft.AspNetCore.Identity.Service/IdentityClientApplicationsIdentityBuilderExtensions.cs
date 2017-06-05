@@ -42,6 +42,8 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             var services = builder.Services;
+
+            services.AddApplicationTokens();
             services.TryAdd(CreateServices<TApplication>());
 
             return new IdentityClientApplicationsBuilder<TApplication>(builder);
@@ -50,6 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
         private static IEnumerable<ServiceDescriptor> CreateServices<TApplication>()
             where TApplication : class
         {
+            yield return ServiceDescriptor.Transient<IApplicationClaimsPrincipalFactory<TApplication>, ApplicationClaimsPrincipalFactory<TApplication>>();
             yield return ServiceDescriptor.Singleton<IPasswordHasher<TApplication>, PasswordHasher<TApplication>>();
             yield return ServiceDescriptor.Singleton<IApplicationValidator<TApplication>, ApplicationValidator<TApplication>>();
             yield return ServiceDescriptor.Singleton(new ApplicationErrorDescriber());

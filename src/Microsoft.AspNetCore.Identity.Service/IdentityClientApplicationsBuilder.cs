@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Identity.Service
 {
-    internal class IdentityClientApplicationsBuilder<TApplication> : IIdentityClientApplicationsBuilder
+    public class IdentityClientApplicationsBuilder<TApplication> : IIdentityClientApplicationsBuilder
     {
         private readonly IdentityBuilder _builder;
 

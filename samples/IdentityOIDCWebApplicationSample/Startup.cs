@@ -1,6 +1,7 @@
 ﻿using IdentityOIDCWebApplicationSample.Identity.Data;
 using IdentityOIDCWebApplicationSample.Identity.Models;
 using IdentityOIDCWebApplicationSample.Identity.Services;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Extensions;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -37,7 +38,7 @@ namespace IdentityOIDCWebApplicationSample
 
             var builder = services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders()
-                .AddApplications()
+                .AddApplications<IdentityClientApplication>()
                 .DisableDeveloperCertificate()
                 .AddEntityFrameworkStores<IdentityApplicationDbContext>()
                 .AddClientExtensions();

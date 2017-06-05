@@ -20,19 +20,18 @@ namespace Microsoft.AspNetCore.Identity.Service
         public void Configure(AuthorizationOptions options)
         {
             var loginPolicy = new AuthorizationPolicyBuilder()
-                .AddAuthenticationSchemes("")
-                .AddAuthenticationSchemes(ApplicationsAuthenticationDefaults.CookieAuthenticationScheme)
+                .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
                 .RequireAuthenticatedUser()
                 .Build();
 
             var sessionPolicy = new AuthorizationPolicyBuilder()
-                .AddAuthenticationSchemes("")
+                .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
                 .AddAuthenticationSchemes(ApplicationsAuthenticationDefaults.CookieAuthenticationScheme)
                 .RequireAuthenticatedUser()
                 .Build();
 
             var managementPolicy = new AuthorizationPolicyBuilder()
-                .AddAuthenticationSchemes("")
+                .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
                 .AddAuthenticationSchemes(ApplicationsAuthenticationDefaults.CookieAuthenticationScheme)
                 .AddRequirements(new ApplicationManagementRequirement())
                 .Build();

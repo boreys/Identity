@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -17,7 +16,6 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
 {
     [Area("Identity")]
     [Route("tfp/Identity/signinsignup/[controller]/[action]")]
-    [Authorize(ApplicationsAuthenticationDefaults.LoginPolicyName)]
     [Authorize(ApplicationsAuthenticationDefaults.SessionPolicyName)]
     [AllowAnonymous]
     public class AccountController : Controller
@@ -87,14 +85,14 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return View(model);
         }
 
-        [HttpGet]        
+        [HttpGet]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
@@ -131,7 +129,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return Redirect("/");
         }
 
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
@@ -227,13 +225,13 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        [HttpGet]        
+        [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -265,7 +263,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return View();
         }
 
-        [HttpGet]        
+        [HttpGet]
         public IActionResult ResetPassword(string code = null)
         {
             return code == null ? View("Error") : View();
@@ -300,7 +298,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return View();
         }
 
-        [HttpGet]        
+        [HttpGet]
         public async Task<ActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
         {
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -313,7 +311,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendCode(SendCodeViewModel model)
         {
@@ -348,7 +346,7 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        [HttpGet]        
+        [HttpGet]
         public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
         {
             // Require that the user has already logged in via username/password or external login

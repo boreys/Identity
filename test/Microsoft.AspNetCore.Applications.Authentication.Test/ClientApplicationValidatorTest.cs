@@ -4,10 +4,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -38,7 +35,7 @@ namespace Microsoft.AspNetCore.Identity.Service
 
             var clientValidator = new ClientApplicationValidator<IdentityClientApplication>(
                 Options.Create(options),
-                GetSessionManager(),
+                GetLoginManager(),
                 manager,
                 new ProtocolErrorProvider());
 
@@ -71,7 +68,7 @@ namespace Microsoft.AspNetCore.Identity.Service
 
             var clientValidator = new ClientApplicationValidator<IdentityClientApplication>(
                 Options.Create(options),
-                GetSessionManager(),
+                GetLoginManager(),
                 manager,
                 new ProtocolErrorProvider());
 
@@ -82,35 +79,9 @@ namespace Microsoft.AspNetCore.Identity.Service
             Assert.True(validation);
         }
 
-        private SessionManager GetSessionManager()
-        {
-            return new TestSessionManager(
-                Mock.Of<IAuthorizationPolicyProvider>(),
-                new TimeStampManager(),
-                Mock.Of<IHttpContextAccessor>(),
+        private LoginManager GetLoginManager() => new LoginManager(
+                Mock.Of<ILoginContextProvider>(),
+                Mock.Of<ILoginFactory>(),
                 new ProtocolErrorProvider());
-        }
-
-        private class TestSessionManager : SessionManager
-        {
-            public TestSessionManager(
-                IAuthorizationPolicyProvider policyProvider,
-                ITimeStampManager timeStampManager,
-                IHttpContextAccessor contextAccessor,
-                ProtocolErrorProvider errorProvider) :
-                base(policyProvider, timeStampManager, contextAccessor, errorProvider)
-            {
-            }
-
-            public override Task<Session> CreateSessionAsync(string userId, string clientId)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override Task<AuthorizeResult> IsAuthorizedAsync(AuthorizationRequest request)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

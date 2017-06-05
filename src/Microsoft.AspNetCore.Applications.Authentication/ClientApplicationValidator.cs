@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Identity.Service
@@ -13,18 +14,18 @@ namespace Microsoft.AspNetCore.Identity.Service
         where TApplication : class
     {
         private readonly IOptions<ApplicationTokenOptions> _options;
-        private readonly SessionManager _sessionManager;
+        private readonly LoginManager _loginManager;
         private readonly ApplicationManager<TApplication> _applicationManager;
         private readonly ProtocolErrorProvider _errorProvider;
 
         public ClientApplicationValidator(
             IOptions<ApplicationTokenOptions> options,
-            SessionManager sessionManager,
+            LoginManager loginManager,
             ApplicationManager<TApplication> applicationManager,
             ProtocolErrorProvider errorProvider)
         {
             _options = options;
-            _sessionManager = sessionManager;
+            _loginManager = loginManager;
             _applicationManager = applicationManager;
             _errorProvider = errorProvider;
         }
@@ -46,10 +47,10 @@ namespace Microsoft.AspNetCore.Identity.Service
                 return RedirectUriResolutionResult.Valid(logoutUrl);
             }
 
-            var sessions = await _sessionManager.GetCurrentSessions();
+            var sessions = await _loginManager.GetLoginContextAsync();
             if (clientId == null)
             {
-                foreach (var identity in sessions.Identities)
+                foreach (var identity in sessions.Applications.Identities)
                 {
                     if (identity.HasClaim(TokenClaimTypes.LogoutRedirectUri, logoutUrl))
                     {
@@ -57,10 +58,10 @@ namespace Microsoft.AspNetCore.Identity.Service
                     }
                 }
 
-                return RedirectUriResolutionResult.Invalid(null);
+                return RedirectUriResolutionResult.Invalid(_errorProvider.InvalidLogoutRedirectUri(logoutUrl));
             }
 
-            foreach (var identity in sessions.Identities)
+            foreach (var identity in sessions.Applications.Identities)
             {
                 if (identity.HasClaim(TokenClaimTypes.ClientId, clientId) &&
                     identity.HasClaim(TokenClaimTypes.LogoutRedirectUri, logoutUrl))
@@ -69,7 +70,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                 }
             }
 
-            return RedirectUriResolutionResult.Invalid(null);
+            return RedirectUriResolutionResult.Invalid(_errorProvider.InvalidLogoutRedirectUri(logoutUrl));
         }
 
         public async Task<RedirectUriResolutionResult> ResolveRedirectUriAsync(string clientId, string redirectUrl)

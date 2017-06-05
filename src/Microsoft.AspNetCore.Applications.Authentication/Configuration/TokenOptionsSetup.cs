@@ -26,16 +26,6 @@ namespace Microsoft.AspNetCore.Identity.Service.Configuration
 
             options.AccessTokenOptions.UserClaims
                 .AddSingle(TokenClaimTypes.Name, _options.Value.ClaimsIdentity.UserNameClaimType);
-
-            //options.LoginPolicy = new AuthorizationPolicyBuilder(options.LoginPolicy)
-            //    .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
-            //    .Build();
-
-            //options.ManagementPolicy = new AuthorizationPolicyBuilder()
-            //    .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
-            //    .AddAuthenticationSchemes(ApplicationTokenOptions.CookieAuthenticationScheme)
-            //    .AddRequirements(new ApplicationManagementRequirement())
-            //    .Build();
         }
     }
 }
