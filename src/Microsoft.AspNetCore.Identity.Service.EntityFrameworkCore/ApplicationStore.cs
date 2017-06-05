@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
 {
-    public class ApplicationStore<TApplication, TScope, TApplicationClaim, TRedirectUri, TContext, TKey, TUserKey>
+    public class ApplicationStore<TApplication, TScope, TApplicationClaim, TRedirectUri, TContext, TKey>
         : IRedirectUriStore<TApplication>,
         IApplicationClaimStore<TApplication>,
         IApplicationClientSecretStore<TApplication>,
@@ -24,7 +24,6 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
         where TRedirectUri : IdentityClientApplicationRedirectUri<TKey>, new()
         where TContext : DbContext
         where TKey : IEquatable<TKey>
-        where TUserKey : IEquatable<TUserKey>
     {
         private bool _disposed;
 
@@ -155,7 +154,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            var id = ConvertUserIdFromString(applicationId);
+            var id = ConvertApplicationIdFromString(applicationId);
             return ApplicationsSet.FindAsync(new object[] { id }, cancellationToken);
         }
 
@@ -386,15 +385,6 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             return id.ToString();
         }
 
-        public virtual string ConvertUserIdToString(TUserKey id)
-        {
-            if (Equals(id, default(TUserKey)))
-            {
-                return null;
-            }
-            return id.ToString();
-        }
-
         public virtual TKey ConvertApplicationIdFromString(string id)
         {
             if (id == null)
@@ -402,15 +392,6 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 return default(TKey);
             }
             return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id);
-        }
-
-        public virtual TUserKey ConvertUserIdFromString(string id)
-        {
-            if (id == null)
-            {
-                return default(TUserKey);
-            }
-            return (TUserKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id);
         }
 
         public Task SetApplicationNameAsync(TApplication application, string name, CancellationToken cancellationToken)

@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.Service.Signing;
+using Microsoft.AspNetCore.Identity.Service.Validation;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Microsoft.AspNetCore.Identity.Service
+namespace Microsoft.AspNetCore.Identity.Service.Internal
 {
     public class DeveloperCertificateSigningCredentialsSource : ISigningCredentialsSource
     {

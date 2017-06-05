@@ -39,12 +39,12 @@ namespace IdentityOIDCWebApplicationSample.Identity.Controllers
             }
 
             var authorizationResult = await _loginManager.CanLogIn(authorization);
-            if (authorizationResult.Status == AuthorizationStatus.Forbidden)
+            if (authorizationResult.Status == LoginStatus.Forbidden)
             {
                 return this.InvalidAuthorization(authorizationResult.Error);
             }
 
-            if (authorizationResult.Status == AuthorizationStatus.LoginRequired)
+            if (authorizationResult.Status == LoginStatus.LoginRequired)
             {
                 return RedirectToLogin(nameof(AccountController.Login), "Account", authorization.Message);
             }

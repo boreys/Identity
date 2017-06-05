@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Applications.Authentication.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;

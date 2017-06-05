@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Service;
+using Microsoft.AspNetCore.Identity.Service.Session;
 
 namespace Microsoft.AspNetCore.Applications.Authentication
 {

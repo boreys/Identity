@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.Service.Session;
 using Microsoft.Extensions.Internal;
 
 namespace Microsoft.AspNetCore.Identity.Service

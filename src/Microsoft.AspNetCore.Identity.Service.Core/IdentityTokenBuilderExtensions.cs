@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.Service;
+using Microsoft.AspNetCore.Identity.Service.Internal;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Microsoft.AspNetCore.Identity.Service
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IdentityTokenBuilderExtensions
     {

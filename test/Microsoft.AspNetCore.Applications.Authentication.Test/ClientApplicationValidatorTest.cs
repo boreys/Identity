@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Applications.Authentication;
+using Microsoft.AspNetCore.Identity.Service.Session;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;

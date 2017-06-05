@@ -27,7 +27,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.Test
         protected override void AddApplicationStore(IServiceCollection services, object context = null)
         {
             services.AddSingleton<IApplicationStore<IdentityClientApplication>>(
-                new ApplicationStore<IdentityClientApplication, IdentityClientApplicationScope<string>, IdentityClientApplicationClaim<string>, IdentityClientApplicationRedirectUri<string>, IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication>, string, string>((IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication>)context, new ApplicationErrorDescriber()));
+                new ApplicationStore<IdentityClientApplication, IdentityClientApplicationScope<string>, IdentityClientApplicationClaim<string>, IdentityClientApplicationRedirectUri<string>, IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication>, string>((IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication>)context, new ApplicationErrorDescriber()));
         }
 
         public IdentityClientApplicationsDbContext<IdentityUser, IdentityClientApplication> CreateContext(bool delete = false)

@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.Service.Internal;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Xunit;
 

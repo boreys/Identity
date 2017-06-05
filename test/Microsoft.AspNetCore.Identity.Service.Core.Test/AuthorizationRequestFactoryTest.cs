@@ -4,6 +4,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.Service.Authorization;
+using Microsoft.AspNetCore.Identity.Service.Internal;
+using Microsoft.AspNetCore.Identity.Service.Validation;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Moq;
 using Xunit;

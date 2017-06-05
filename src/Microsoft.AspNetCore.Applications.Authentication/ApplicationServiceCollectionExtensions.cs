@@ -3,21 +3,21 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Applications.Authentication;
+using Microsoft.AspNetCore.Applications.Authentication.Internal;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Service;
 using Microsoft.AspNetCore.Identity.Service.Claims;
-using Microsoft.AspNetCore.Identity.Service.Configuration;
-using Microsoft.AspNetCore.Identity.Service.Core;
+using Microsoft.AspNetCore.Identity.Service.Session;
+using Microsoft.AspNetCore.Identity.Service.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Options.Infrastructure;
 
-namespace Microsoft.AspNetCore.Applications.Authentication
+namespace Microsoft.AspNetCore.Identity
 {
     public static class ApplicationServiceCollectionExtensions
     {

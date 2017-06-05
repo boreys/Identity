@@ -2,12 +2,15 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using Microsoft.AspNetCore.Identity.Service;
+using Microsoft.AspNetCore.Identity.Service.AzureKeyVault;
+using Microsoft.AspNetCore.Identity.Service.AzureKeyVault.Internal;
+using Microsoft.AspNetCore.Identity.Service.Signing;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options.Infrastructure;
 
-namespace Microsoft.AspNetCore.Identity.Service.AzureKeyVault
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IdentityClientApplicationsBuilderExtensions
     {
@@ -46,8 +49,9 @@ namespace Microsoft.AspNetCore.Identity.Service.AzureKeyVault
         {
             private const string SectionKey = "Microsoft:AspNetCore:Identity:Service:SigningKeys:KeyVault";
 
-            public DefaultSetup(IConfiguration configuration) : 
-                base(options => configuration.GetSection(SectionKey).Bind(options)) { }
+            public DefaultSetup(IConfiguration configuration) :
+                base(options => configuration.GetSection(SectionKey).Bind(options))
+            { }
         }
     }
 }

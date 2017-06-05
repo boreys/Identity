@@ -3,14 +3,15 @@
 
 using System;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Identity.Service.IntegratedWebClient;
+using Microsoft.AspNetCore.Identity.Service.IntegratedWebClient.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Options.Infrastructure;
 
-namespace Microsoft.AspNetCore.Identity.Service.IntegratedWebClient
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IntegratedWebClientServiceCollectionExtensions
     {

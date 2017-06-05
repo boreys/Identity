@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity.Service.Claims;
 using Microsoft.AspNetCore.Identity.Service.Core;
-using Microsoft.AspNetCore.Identity.Service.Serialization;
+using Microsoft.AspNetCore.Identity.Service.Internal;
+using Microsoft.AspNetCore.Identity.Service.Validation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -158,7 +159,7 @@ namespace Microsoft.AspNetCore.Identity.Service
                     RedirectUri = "http://www.example.com/callback",
                     Scopes = new ApplicationScope[] { ApplicationScope.OpenId, ApplicationScope.Profile },
                     Tokens = new[] { TokenTypes.AuthorizationCode },
-                    Claims = new[] {new Claim("scp","openid profile")}
+                    Claims = new[] { new Claim("scp", "openid profile") }
                 });
 
         private ITimeStampManager GetTimeManager(

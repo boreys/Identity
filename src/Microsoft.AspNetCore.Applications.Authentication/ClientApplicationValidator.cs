@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Applications.Authentication;
+using Microsoft.AspNetCore.Identity.Service;
+using Microsoft.AspNetCore.Identity.Service.Validation;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Identity.Service
+namespace Microsoft.AspNetCore.Applications.Authentication
 {
     public class ClientApplicationValidator<TApplication> : IClientIdValidator, IRedirectUriResolver, IScopeResolver
         where TApplication : class

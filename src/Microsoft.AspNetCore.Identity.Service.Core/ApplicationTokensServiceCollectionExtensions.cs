@@ -2,15 +2,19 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Applications.Authentication;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity.Service.Authorization;
 using Microsoft.AspNetCore.Identity.Service.Claims;
+using Microsoft.AspNetCore.Identity.Service.Configuration;
 using Microsoft.AspNetCore.Identity.Service.Core;
-using Microsoft.AspNetCore.Identity.Service.Core.Claims;
-using Microsoft.AspNetCore.Identity.Service.Metadata;
-using Microsoft.AspNetCore.Identity.Service.Serialization;
+using Microsoft.AspNetCore.Identity.Service.Internal;
+using Microsoft.AspNetCore.Identity.Service.Issuers;
+using Microsoft.AspNetCore.Identity.Service.Session;
+using Microsoft.AspNetCore.Identity.Service.Signing;
+using Microsoft.AspNetCore.Identity.Service.Tokens;
+using Microsoft.AspNetCore.Identity.Service.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
