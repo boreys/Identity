@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
         IApplicationClientSecretStore<TApplication>,
         IApplicationScopeStore<TApplication>,
         IQueryableApplicationStore<TApplication>
-        where TApplication : IdentityClientApplication<TKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
+        where TApplication : IdentityClientApplication<TKey, TScope, TApplicationClaim, TRedirectUri>
         where TScope : IdentityClientApplicationScope<TKey>, new()
         where TApplicationClaim : IdentityClientApplicationClaim<TKey>, new()
         where TRedirectUri : IdentityClientApplicationRedirectUri<TKey>, new()
@@ -151,14 +151,6 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             }
         }
 
-        public async Task<IEnumerable<TApplication>> FindByUserIdAsync(string userId, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            var id = ConvertUserIdFromString(userId);
-            return await Applications.Where(a => a.UserId.Equals(id)).ToListAsync();
-        }
-
         public Task<TApplication> FindByIdAsync(string applicationId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -172,14 +164,6 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             var id = ConvertApplicationIdToString(application.Id);
-            return Task.FromResult(id);
-        }
-
-        public Task<string> GetApplicationUserIdAsync(TApplication application, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ThrowIfDisposed();
-            var id = ConvertUserIdToString(application.UserId);
             return Task.FromResult(id);
         }
 

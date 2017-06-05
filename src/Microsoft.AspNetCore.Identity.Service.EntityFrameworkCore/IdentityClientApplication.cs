@@ -10,34 +10,24 @@ namespace Microsoft.AspNetCore.Identity.Service
     {
     }
 
-    public class IdentityClientApplication<TUserKey> :
-        IdentityClientApplication<string, TUserKey>
-        where TUserKey : IEquatable<TUserKey>
-    {
-    }
-
-    public class IdentityClientApplication<TApplicationKey, TUserKey> :
+    public class IdentityClientApplication<TApplicationKey> :
         IdentityClientApplication<
             TApplicationKey,
-            TUserKey,
             IdentityClientApplicationScope<TApplicationKey>,
             IdentityClientApplicationClaim<TApplicationKey>,
             IdentityClientApplicationRedirectUri<TApplicationKey>>
         where TApplicationKey : IEquatable<TApplicationKey>
-        where TUserKey : IEquatable<TUserKey>
     {
     }
 
-    public class IdentityClientApplication<TKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
+    public class IdentityClientApplication<TKey, TScope, TApplicationClaim, TRedirectUri>
         where TKey : IEquatable<TKey>
-        where TUserKey : IEquatable<TUserKey>
         where TScope : IdentityClientApplicationScope<TKey>
         where TApplicationClaim : IdentityClientApplicationClaim<TKey>
         where TRedirectUri : IdentityClientApplicationRedirectUri<TKey>
     {
         public TKey Id { get; set; }
         public string Name { get; set; }
-        public TUserKey UserId { get; set; }
         public string ClientId { get; set; }
         public string ClientSecretHash { get; set; }
         public string ConcurrencyStamp { get; set; }

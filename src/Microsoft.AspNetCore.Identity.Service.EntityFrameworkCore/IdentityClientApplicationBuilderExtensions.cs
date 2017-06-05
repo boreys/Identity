@@ -45,7 +45,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
             identityBuilder.AddEntityFrameworkStores<TContext>();
 
             var services = builder.Services;
-            var applicationType = FindGenericBaseType(builder.ApplicationType, typeof(IdentityClientApplication<,,,,>));
+            var applicationType = FindGenericBaseType(builder.ApplicationType, typeof(IdentityClientApplication<,,,>));
             var userType = FindGenericBaseType(builder.UserType, typeof(IdentityUser<>));
 
             services.AddTransient(

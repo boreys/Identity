@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
         where TUser : IdentityUser<TUserKey>
         where TRole : IdentityRole<TUserKey>
         where TUserKey : IEquatable<TUserKey>
-        where TApplication : IdentityClientApplication<TApplicationKey, TUserKey>
+        where TApplication : IdentityClientApplication<TApplicationKey>
         where TApplicationKey : IEquatable<TApplicationKey>
     {
         public IdentityClientApplicationsDbContext(DbContextOptions options) : base(options) { }
@@ -62,7 +62,7 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
         where TUserLogin : IdentityUserLogin<TUserKey>
         where TRoleClaim : IdentityRoleClaim<TUserKey>
         where TUserToken : IdentityUserToken<TUserKey>
-        where TApplication : IdentityClientApplication<TApplicationKey, TUserKey, TScope, TApplicationClaim, TRedirectUri>
+        where TApplication : IdentityClientApplication<TApplicationKey, TScope, TApplicationClaim, TRedirectUri>
         where TScope : IdentityClientApplicationScope<TApplicationKey>
         where TApplicationClaim : IdentityClientApplicationClaim<TApplicationKey>
         where TRedirectUri : IdentityClientApplicationRedirectUri<TApplicationKey>
@@ -94,11 +94,6 @@ namespace Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore
                 b.HasIndex(a => a.ClientId)
                     .HasName("ClientIdIndex")
                     .IsUnique();
-
-                b.HasOne<TUser>()
-                    .WithMany()
-                    .HasForeignKey(a => a.UserId)
-                    .IsRequired(false);
 
                 b.Property(a => a.ConcurrencyStamp)
                 .IsConcurrencyToken();

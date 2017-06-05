@@ -45,7 +45,7 @@ namespace Microsoft.AspNetCore.Identity.Service
             get
             {
                 ThrowIfDisposed();
-                return Store is IQueryableUserStore<TApplication>;
+                return Store is IQueryableApplicationStore<TApplication>;
             }
         }
 
