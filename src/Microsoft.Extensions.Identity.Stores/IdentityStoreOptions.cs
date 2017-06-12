@@ -4,7 +4,7 @@
 namespace Microsoft.AspNetCore.Identity
 {
     /// <summary>
-    /// Used for store schema versioning.
+    /// Used for configuring store behavior.
     /// </summary>
     public class IdentityStoreOptions
     {
@@ -27,5 +27,15 @@ namespace Microsoft.AspNetCore.Identity
         /// Used to determine what features/schema are supported in the store.
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// When false, no roles related store functionality/schema should be enabled.
+        /// </summary>
+        public bool SupportsRoles { get; set; }
+
+        /// <summary>
+        /// When false, no client related store functionality/schema should be enabled.
+        /// </summary>
+        public bool SupportsClients { get; set; }
     }
 }
