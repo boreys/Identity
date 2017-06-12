@@ -499,7 +499,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Act
             // Assert
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => manager.CreateAsync(user));
-            Assert.Contains(Resources.NullSecurityStamp, ex.Message);
+            Assert.Contains(Extensions.Identity.Core.Resources.NullSecurityStamp, ex.Message);
 
             store.VerifyAll();
         }
@@ -516,7 +516,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Act
             // Assert
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => manager.UpdateAsync(user));
-            Assert.Contains(Resources.NullSecurityStamp, ex.Message);
+            Assert.Contains(Extensions.Identity.Core.Resources.NullSecurityStamp, ex.Message);
 
             store.VerifyAll();
         }
@@ -765,7 +765,7 @@ namespace Microsoft.AspNetCore.Identity.Test
         [Fact]
         public async Task AuthTokenMethodsFailWhenStoreNotImplemented()
         {
-            var error = Resources.StoreNotIUserAuthenticationTokenStore;
+            var error = Extensions.Identity.Core.Resources.StoreNotIUserAuthenticationTokenStore;
             var manager = MockHelpers.TestUserManager(new NoopUserStore());
             Assert.False(manager.SupportsUserAuthenticationTokens);
             await VerifyException<NotSupportedException>(async () => await manager.GetAuthenticationTokenAsync(null, null, null), error);
@@ -776,7 +776,7 @@ namespace Microsoft.AspNetCore.Identity.Test
         [Fact]
         public async Task AuthenticatorMethodsFailWhenStoreNotImplemented()
         {
-            var error = Resources.StoreNotIUserAuthenticatorKeyStore;
+            var error = Extensions.Identity.Core.Resources.StoreNotIUserAuthenticatorKeyStore;
             var manager = MockHelpers.TestUserManager(new NoopUserStore());
             Assert.False(manager.SupportsUserAuthenticatorKey);
             await VerifyException<NotSupportedException>(async () => await manager.GetAuthenticatorKeyAsync(null), error);
@@ -786,7 +786,7 @@ namespace Microsoft.AspNetCore.Identity.Test
         [Fact]
         public async Task RecoveryMethodsFailWhenStoreNotImplemented()
         {
-            var error = Resources.StoreNotIUserTwoFactorRecoveryCodeStore;
+            var error = Extensions.Identity.Core.Resources.StoreNotIUserTwoFactorRecoveryCodeStore;
             var manager = MockHelpers.TestUserManager(new NoopUserStore());
             Assert.False(manager.SupportsUserTwoFactorRecoveryCodes);
             await VerifyException<NotSupportedException>(async () => await manager.RedeemTwoFactorRecoveryCodeAsync(null, null), error);

@@ -309,4 +309,8 @@
     <value>Store does not implement IUserActivityStore&lt;User&gt;.</value>
     <comment>Error when the store does not implement this interface</comment>
   </data>
+  <data name="NoRoleType" xml:space="preserve">
+    <value>No RoleType was specified, try AddRoles&lt;TRole&gt;().</value>
+    <comment>Error when the IdentityBuilder.RoleType was not specified</comment>
+  </data>
 </root>
